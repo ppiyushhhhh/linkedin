@@ -19,13 +19,14 @@ export type FeedPost = {
   content: string;
   image_url: string | null;
   created_at: string;
+  author_id: string;
   author: FeedAuthor;
-  reactions: { like: number; celebrate: number; love: number; insightful: number; total: number };
+  reactions: { like: number; celebrate: number; support: number; insightful: number; funny: number; total: number };
   my_reaction: string | null;
   comment_count: number;
 };
 
-const REACTION_TYPES = ["like", "celebrate", "love", "insightful"] as const;
+export const REACTION_TYPES = ["like", "celebrate", "support", "insightful", "funny"] as const;
 
 export const getFeed = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -51,7 +52,7 @@ export const getFeed = createServerFn({ method: "GET" })
     ]);
 
     const reactionMap = new Map<string, FeedPost["reactions"]>();
-    for (const id of ids) reactionMap.set(id, { like: 0, celebrate: 0, love: 0, insightful: 0, total: 0 });
+    for (const id of ids) reactionMap.set(id, { like: 0, celebrate: 0, support: 0, insightful: 0, funny: 0, total: 0 });
     for (const r of reactions ?? []) {
       const m = reactionMap.get(r.post_id)!;
       if ((REACTION_TYPES as readonly string[]).includes(r.type)) (m as any)[r.type] += 1;
@@ -67,6 +68,7 @@ export const getFeed = createServerFn({ method: "GET" })
       content: p.content,
       image_url: p.image_url,
       created_at: p.created_at,
+      author_id: p.author_id,
       author: p.profiles as FeedAuthor,
       reactions: reactionMap.get(p.id)!,
       my_reaction: myMap.get(p.id) ?? null,
