@@ -35,7 +35,7 @@ export const getFeed = createServerFn({ method: "GET" })
     const { supabase, userId } = context;
     let q = supabase
       .from("posts")
-      .select(`id, content, image_url, created_at, author_id, profiles!inner(${PROFILE_LITE})`)
+      .select("id, content, image_url, created_at, author_id")
       .order("created_at", { ascending: false })
       .limit(data.limit);
     if (data.cursor) q = q.lt("created_at", data.cursor);
@@ -44,12 +44,16 @@ export const getFeed = createServerFn({ method: "GET" })
     const posts = (rows ?? []) as any[];
     const ids = posts.map((p) => p.id);
     if (ids.length === 0) return { posts: [] as FeedPost[], nextCursor: null as string | null };
+    const authorIds = Array.from(new Set(posts.map((p) => p.author_id)));
 
-    const [{ data: reactions }, { data: myReactions }, { data: comments }] = await Promise.all([
+    const [{ data: reactions }, { data: myReactions }, { data: comments }, { data: authors }] = await Promise.all([
       supabaseAdmin.from("reactions").select("post_id, type").in("post_id", ids),
       supabase.from("reactions").select("post_id, type").in("post_id", ids).eq("user_id", userId),
       supabaseAdmin.from("comments").select("post_id").in("post_id", ids),
+      supabaseAdmin.from("profiles").select(PROFILE_LITE).in("id", authorIds),
     ]);
+    const authorMap = new Map<string, FeedAuthor>();
+    for (const a of (authors ?? []) as any[]) authorMap.set(a.id, a);
 
     const reactionMap = new Map<string, FeedPost["reactions"]>();
     for (const id of ids) reactionMap.set(id, { like: 0, celebrate: 0, support: 0, insightful: 0, funny: 0, total: 0 });
@@ -69,7 +73,7 @@ export const getFeed = createServerFn({ method: "GET" })
       image_url: p.image_url,
       created_at: p.created_at,
       author_id: p.author_id,
-      author: p.profiles as FeedAuthor,
+      author: authorMap.get(p.author_id)!,
       reactions: reactionMap.get(p.id)!,
       my_reaction: myMap.get(p.id) ?? null,
       comment_count: commentMap.get(p.id) ?? 0,
@@ -125,11 +129,17 @@ export const getComments = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const { data: rows, error } = await supabaseAdmin
       .from("comments")
-      .select(`id, content, created_at, author_id, profiles!inner(${PROFILE_LITE})`)
+      .select("id, content, created_at, author_id")
       .eq("post_id", data.post_id)
       .order("created_at", { ascending: true });
     if (error) throw new Error(error.message);
-    return (rows ?? []) as any[];
+    const rowsList = (rows ?? []) as any[];
+    if (rowsList.length === 0) return [] as any[];
+    const authorIds = Array.from(new Set(rowsList.map((r) => r.author_id)));
+    const { data: authors } = await supabaseAdmin.from("profiles").select(PROFILE_LITE).in("id", authorIds);
+    const amap = new Map<string, any>();
+    for (const a of authors ?? []) amap.set(a.id, a);
+    return rowsList.map((r) => ({ ...r, author: amap.get(r.author_id) }));
   });
 
 export const addComment = createServerFn({ method: "POST" })
