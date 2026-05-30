@@ -1,5 +1,6 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { Home, Users, Search, User as UserIcon, LogOut } from "lucide-react";
+import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyProfile } from "@/lib/profile.functions";
@@ -44,8 +45,8 @@ export function AppHeader() {
     <header className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4">
         <Link to="/feed" className="flex items-center gap-2 font-bold text-primary">
-          <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">CS</div>
-          <span className="hidden sm:inline">ConnectSphere</span>
+          <img src={logo} alt="Linkden" className="h-8 w-8 rounded-md object-cover" />
+          <span className="hidden sm:inline">Linkden</span>
         </Link>
 
         <form

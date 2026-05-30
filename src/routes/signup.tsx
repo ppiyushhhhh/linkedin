@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { AuthShell } from "./login";
 
 export const Route = createFileRoute("/signup")({
-  head: () => ({ meta: [{ title: "Join ConnectSphere" }] }),
+  head: () => ({ meta: [{ title: "Join Linkden" }] }),
   component: SignupPage,
 });
 
@@ -41,7 +41,7 @@ function SignupPage() {
   };
 
   return (
-    <AuthShell title="Make the most of your professional life" subtitle="Join ConnectSphere — it's free.">
+    <AuthShell title="Make the most of your professional life" subtitle="Join Linkden — it's free.">
       <form onSubmit={onSubmit} className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
@@ -68,7 +68,7 @@ function SignupPage() {
       </div>
       <Button variant="outline" className="w-full" type="button" onClick={onGoogle}>Continue with Google</Button>
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        Already on ConnectSphere?{" "}
+        Already on Linkden?{" "}
         <Link to="/login" className="font-semibold text-primary hover:underline">Sign in</Link>
       </p>
     </AuthShell>
