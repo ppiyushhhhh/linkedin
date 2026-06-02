@@ -220,9 +220,7 @@ export const searchAll = createServerFn({ method: "GET" })
       .select(
         "id, profile_id, title, description, tech_stack, image_url, github_url, live_url",
       )
-      .or(
-        `title.ilike.${term},description.ilike.${term},tech_stack.cs.{${safe}}`,
-      )
+      .or(`title.ilike.${term},description.ilike.${term}`)
       .limit(30);
 
     const projectAuthorIds = Array.from(
