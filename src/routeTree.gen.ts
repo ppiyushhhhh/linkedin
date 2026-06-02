@@ -20,9 +20,12 @@ import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedSavedPostsRouteImport } from './routes/_authenticated.saved-posts'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedNetworkRouteImport } from './routes/_authenticated.network'
+import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated.feed'
+import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated.messages.index'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated.settings.profile'
 import { Route as AuthenticatedPostIdRouteImport } from './routes/_authenticated.post.$id'
+import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated.messages.$conversationId'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -79,11 +82,22 @@ const AuthenticatedNetworkRoute = AuthenticatedNetworkRouteImport.update({
   path: '/network',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedFeedRoute = AuthenticatedFeedRouteImport.update({
   id: '/feed',
   path: '/feed',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMessagesIndexRoute =
+  AuthenticatedMessagesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedMessagesRoute,
+  } as any)
 const AuthenticatedSettingsProfileRoute =
   AuthenticatedSettingsProfileRouteImport.update({
     id: '/profile',
@@ -95,6 +109,12 @@ const AuthenticatedPostIdRoute = AuthenticatedPostIdRouteImport.update({
   path: '/post/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMessagesConversationIdRoute =
+  AuthenticatedMessagesConversationIdRouteImport.update({
+    id: '/$conversationId',
+    path: '/$conversationId',
+    getParentRoute: () => AuthenticatedMessagesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -102,14 +122,17 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/feed': typeof AuthenticatedFeedRoute
+  '/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/network': typeof AuthenticatedNetworkRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/messages/': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -123,8 +146,10 @@ export interface FileRoutesByTo {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/messages': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,14 +159,17 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_authenticated/feed': typeof AuthenticatedFeedRoute
+  '/_authenticated/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/_authenticated/network': typeof AuthenticatedNetworkRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_authenticated/post/$id': typeof AuthenticatedPostIdRoute
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,14 +179,17 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/feed'
+    | '/messages'
     | '/network'
     | '/notifications'
     | '/saved-posts'
     | '/search'
     | '/settings'
     | '/u/$username'
+    | '/messages/$conversationId'
     | '/post/$id'
     | '/settings/profile'
+    | '/messages/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -172,8 +203,10 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/u/$username'
+    | '/messages/$conversationId'
     | '/post/$id'
     | '/settings/profile'
+    | '/messages'
   id:
     | '__root__'
     | '/'
@@ -182,14 +215,17 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/_authenticated/feed'
+    | '/_authenticated/messages'
     | '/_authenticated/network'
     | '/_authenticated/notifications'
     | '/_authenticated/saved-posts'
     | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/u/$username'
+    | '/_authenticated/messages/$conversationId'
     | '/_authenticated/post/$id'
     | '/_authenticated/settings/profile'
+    | '/_authenticated/messages/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -280,12 +316,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNetworkRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/messages': {
+      id: '/_authenticated/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AuthenticatedMessagesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/feed': {
       id: '/_authenticated/feed'
       path: '/feed'
       fullPath: '/feed'
       preLoaderRoute: typeof AuthenticatedFeedRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/messages/': {
+      id: '/_authenticated/messages/'
+      path: '/'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof AuthenticatedMessagesIndexRouteImport
+      parentRoute: typeof AuthenticatedMessagesRoute
     }
     '/_authenticated/settings/profile': {
       id: '/_authenticated/settings/profile'
@@ -301,8 +351,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPostIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/messages/$conversationId': {
+      id: '/_authenticated/messages/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/messages/$conversationId'
+      preLoaderRoute: typeof AuthenticatedMessagesConversationIdRouteImport
+      parentRoute: typeof AuthenticatedMessagesRoute
+    }
   }
 }
+
+interface AuthenticatedMessagesRouteChildren {
+  AuthenticatedMessagesConversationIdRoute: typeof AuthenticatedMessagesConversationIdRoute
+  AuthenticatedMessagesIndexRoute: typeof AuthenticatedMessagesIndexRoute
+}
+
+const AuthenticatedMessagesRouteChildren: AuthenticatedMessagesRouteChildren = {
+  AuthenticatedMessagesConversationIdRoute:
+    AuthenticatedMessagesConversationIdRoute,
+  AuthenticatedMessagesIndexRoute: AuthenticatedMessagesIndexRoute,
+}
+
+const AuthenticatedMessagesRouteWithChildren =
+  AuthenticatedMessagesRoute._addFileChildren(
+    AuthenticatedMessagesRouteChildren,
+  )
 
 interface AuthenticatedSettingsRouteChildren {
   AuthenticatedSettingsProfileRoute: typeof AuthenticatedSettingsProfileRoute
@@ -319,6 +392,7 @@ const AuthenticatedSettingsRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
+  AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRouteWithChildren
   AuthenticatedNetworkRoute: typeof AuthenticatedNetworkRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSavedPostsRoute: typeof AuthenticatedSavedPostsRoute
@@ -329,6 +403,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFeedRoute: AuthenticatedFeedRoute,
+  AuthenticatedMessagesRoute: AuthenticatedMessagesRouteWithChildren,
   AuthenticatedNetworkRoute: AuthenticatedNetworkRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedSavedPostsRoute: AuthenticatedSavedPostsRoute,

@@ -31,7 +31,6 @@ import {
   X,
   UserPlus,
   UserMinus,
-  MessageSquare,
   Building2,
   MapPin,
   Users,
@@ -41,6 +40,7 @@ import {
   Eye,
 } from "lucide-react";
 import { BackButton } from "@/components/app/BackButton";
+import { MessageButton } from "@/components/app/MessageButton";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/network")({
@@ -199,9 +199,7 @@ function NetworkPage() {
             <PersonCard key={`${c.requester_id}-${c.addressee_id}`} person={c.other}
               actions={
                 <>
-                  <Button size="sm" variant="outline" className="flex-1" onClick={() => toast.info("Messaging coming soon")}>
-                    <MessageSquare className="mr-1 h-4 w-4" /> Message
-                  </Button>
+                  <MessageButton otherId={c.other.id} className="flex-1" />
                   <ConfirmRemove name={fullName(c.other)} onConfirm={() => remove.mutate(c.other.id)} />
                 </>
               } />

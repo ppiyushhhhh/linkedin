@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Trash2, Check, UserPlus, UserCheck, Heart, MessageSquare, AtSign, Repeat2 } from "lucide-react";
+import { MoreHorizontal, Trash2, Check, UserPlus, UserCheck, Heart, MessageSquare, AtSign, Repeat2, Mail } from "lucide-react";
 import type { NotificationRow } from "@/lib/notifications.functions";
 import { cn } from "@/lib/utils";
 
@@ -37,6 +37,7 @@ export function notificationText(n: NotificationRow) {
     case "post_repost": return `${name} reposted your post`;
     case "comment_reply": return `${name} replied to your comment`;
     case "mention": return `${name} mentioned you in a ${n.entity_type ?? "post"}`;
+    case "message": return `${name} sent you a message`;
     default: return n.message ?? `${name} sent you a notification`;
   }
 }
@@ -50,6 +51,9 @@ export function notificationHref(n: NotificationRow): { to: any; params?: any } 
       return n.actor?.username
         ? { to: "/u/$username", params: { username: n.actor.username } }
         : { to: "/network" };
+    case "message":
+      if (n.entity_id) return { to: "/messages/$conversationId", params: { conversationId: n.entity_id } };
+      return { to: "/messages" };
     case "post_like":
     case "post_comment":
     case "post_repost":
@@ -77,6 +81,7 @@ function iconFor(type: string) {
     case "post_comment":
     case "comment_reply": return <MessageSquare className={cls} />;
     case "mention": return <AtSign className={cls} />;
+    case "message": return <Mail className={cls} />;
     default: return <Check className={cls} />;
   }
 }

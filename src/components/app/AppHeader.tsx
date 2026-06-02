@@ -1,9 +1,10 @@
 import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
-import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare, Bookmark } from "lucide-react";
+import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare, Bookmark, MessageSquare } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyProfile } from "@/lib/profile.functions";
+import { getUnreadMessageCount } from "@/lib/messages.functions";
 import { UserAvatar } from "./UserAvatar";
 import { NotificationBell } from "./NotificationBell";
 import {
@@ -17,10 +18,11 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 
 const navItems = [
-  { to: "/feed", label: "Home", icon: Home },
-  { to: "/network", label: "Network", icon: Users },
-  { to: "/feed", label: "Post", icon: PlusSquare },
-  { to: "/search", label: "Search", icon: Search },
+  { to: "/feed", label: "Home", icon: Home, key: "home" },
+  { to: "/network", label: "Network", icon: Users, key: "network" },
+  { to: "/messages", label: "Messages", icon: MessageSquare, key: "messages" },
+  { to: "/search", label: "Search", icon: Search, key: "search" },
+  { to: "/feed", label: "Post", icon: PlusSquare, key: "post" },
 ];
 
 export function AppHeader() {
@@ -38,6 +40,13 @@ export function AppHeader() {
     queryKey: ["me-profile"],
     queryFn: () => getMyProfile(),
   });
+
+  const { data: unreadMsgs } = useQuery({
+    queryKey: ["unread-messages"],
+    queryFn: () => getUnreadMessageCount(),
+    refetchInterval: 30_000,
+  });
+  const msgCount = unreadMsgs?.count ?? 0;
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -75,14 +84,19 @@ export function AppHeader() {
         <nav className="ml-auto hidden items-center gap-1 md:flex">
           {navItems.map((item) => (
             <Link
-              key={item.label}
+              key={item.key}
               to={item.to as any}
-              className="flex min-w-[60px] flex-col items-center rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground [&.active]:text-primary [&.active]:border-b-2 [&.active]:border-primary"
+              className="relative flex min-w-[60px] flex-col items-center rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground [&.active]:text-primary [&.active]:border-b-2 [&.active]:border-primary"
               activeProps={{ className: "active" }}
-              activeOptions={{ exact: true }}
+              activeOptions={{ exact: false }}
             >
               <item.icon className="h-5 w-5" />
               <span>{item.label}</span>
+              {item.key === "messages" && msgCount > 0 && (
+                <span className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-destructive-foreground">
+                  {msgCount > 9 ? "9+" : msgCount}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -104,6 +118,14 @@ export function AppHeader() {
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate({ to: "/feed" })}>
               <Home className="mr-2 h-4 w-4" /> Home
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/messages" })}>
+              <MessageSquare className="mr-2 h-4 w-4" /> Messages
+              {msgCount > 0 && (
+                <span className="ml-auto rounded-full bg-destructive px-1.5 text-[10px] font-semibold text-destructive-foreground">
+                  {msgCount > 9 ? "9+" : msgCount}
+                </span>
+              )}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate({ to: "/saved-posts" })}>
               <Bookmark className="mr-2 h-4 w-4" /> Saved posts
