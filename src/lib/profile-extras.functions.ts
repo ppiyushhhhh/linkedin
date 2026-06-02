@@ -12,6 +12,8 @@ const projectSchema = z.object({
   live_url: z.string().trim().url().or(z.literal("")).optional(),
   github_url: z.string().trim().url().or(z.literal("")).optional(),
   image_url: z.string().trim().url().or(z.literal("")).optional(),
+  start_date: z.string().nullable().optional(),
+  end_date: z.string().nullable().optional(),
 });
 
 export const upsertProject = createServerFn({ method: "POST" })
@@ -26,6 +28,8 @@ export const upsertProject = createServerFn({ method: "POST" })
       live_url: data.live_url || null,
       github_url: data.github_url || null,
       image_url: data.image_url || null,
+      start_date: data.start_date || null,
+      end_date: data.end_date || null,
     };
     const { error } = data.id
       ? await context.supabase.from("projects" as any).update(row).eq("id", data.id).eq("profile_id", context.userId)
@@ -49,6 +53,8 @@ const certSchema = z.object({
   name: z.string().trim().min(1).max(160),
   issuer: z.string().trim().max(160).default(""),
   issue_date: z.string().nullable().optional(),
+  expiry_date: z.string().nullable().optional(),
+  credential_id: z.string().trim().max(120).nullable().optional(),
   credential_url: z.string().trim().url().or(z.literal("")).optional(),
 });
 
@@ -61,6 +67,8 @@ export const upsertCertification = createServerFn({ method: "POST" })
       name: data.name,
       issuer: data.issuer,
       issue_date: data.issue_date || null,
+      expiry_date: data.expiry_date || null,
+      credential_id: data.credential_id || null,
       credential_url: data.credential_url || null,
     };
     const { error } = data.id

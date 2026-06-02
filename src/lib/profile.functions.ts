@@ -83,10 +83,12 @@ const updateSchema = z.object({
   last_name: z.string().trim().max(60).default(""),
   headline: z.string().trim().max(220).default(""),
   about: z.string().trim().max(2600).default(""),
+  company: z.string().trim().max(120).default(""),
   location: z.string().trim().max(120).default(""),
   website: z.string().trim().url().or(z.literal("")).optional(),
   github_url: z.string().trim().url().or(z.literal("")).optional(),
   linkedin_url: z.string().trim().url().or(z.literal("")).optional(),
+  portfolio_url: z.string().trim().url().or(z.literal("")).optional(),
   avatar_url: z.string().url().or(z.literal("")).optional(),
   cover_url: z.string().url().or(z.literal("")).optional(),
 });
@@ -101,10 +103,11 @@ export const updateMyProfile = createServerFn({ method: "POST" })
       website: data.website || null,
       github_url: data.github_url || null,
       linkedin_url: data.linkedin_url || null,
+      portfolio_url: data.portfolio_url || null,
       avatar_url: data.avatar_url || null,
       cover_url: data.cover_url || null,
     };
-    const { error } = await supabase.from("profiles").update(payload).eq("id", userId);
+    const { error } = await supabase.from("profiles" as any).update(payload).eq("id", userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -114,6 +117,7 @@ const experienceSchema = z.object({
   id: z.string().uuid().optional(),
   title: z.string().trim().min(1).max(120),
   company: z.string().trim().min(1).max(120),
+  employment_type: z.string().trim().max(40).default(""),
   location: z.string().trim().max(120).default(""),
   start_date: z.string().min(1),
   end_date: z.string().nullable().optional(),
@@ -187,9 +191,18 @@ export const deleteEducation = createServerFn({ method: "POST" })
 // Skills
 export const addSkill = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ name: z.string().trim().min(1).max(60) }).parse(d))
+  .inputValidator((d) =>
+    z
+      .object({
+        name: z.string().trim().min(1).max(60),
+        level: z.enum(["Beginner", "Intermediate", "Advanced"]).nullable().optional(),
+      })
+      .parse(d)
+  )
   .handler(async ({ data, context }) => {
-    const { error } = await context.supabase.from("skills").insert({ profile_id: context.userId, name: data.name });
+    const { error } = await context.supabase
+      .from("skills" as any)
+      .insert({ profile_id: context.userId, name: data.name, level: data.level ?? null });
     if (error && !error.message.includes("duplicate")) throw new Error(error.message);
     return { ok: true };
   });
