@@ -196,60 +196,6 @@ function ProfileCard({
   );
 }
 
-function SuggestionsCard({ suggestions }: { suggestions: any[] }) {
-  const qc = useQueryClient();
-  const connect = useMutation({
-    mutationFn: (id: string) => sendConnectionRequest({ data: { addressee_id: id } }),
-    onSuccess: () => {
-      toast.success("Connection request sent");
-      qc.invalidateQueries({ queryKey: ["suggestions"] });
-    },
-    onError: (e: any) => toast.error(e.message || "Could not send request"),
-  });
-
-  return (
-    <div className="rounded-xl border bg-card p-4 shadow-sm">
-      <h3 className="text-sm font-semibold">People you may know</h3>
-      <ul className="mt-3 space-y-3">
-        {suggestions.slice(0, 5).map((p: any) => {
-          const n = `${p.first_name} ${p.last_name}`.trim() || p.username;
-          return (
-            <li key={p.id} className="flex items-start gap-2">
-              <Link to="/u/$username" params={{ username: p.username }}>
-                <UserAvatar url={p.avatar_url} name={n} className="h-10 w-10" />
-              </Link>
-              <div className="min-w-0 flex-1">
-                <Link
-                  to="/u/$username"
-                  params={{ username: p.username }}
-                  className="block truncate text-sm font-semibold hover:underline"
-                >
-                  {n}
-                </Link>
-                <p className="line-clamp-2 text-xs text-muted-foreground">{p.headline}</p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="mt-1.5 h-7 rounded-full px-3 text-xs"
-                  disabled={connect.isPending && connect.variables === p.id}
-                  onClick={() => connect.mutate(p.id)}
-                >
-                  <UserPlus className="mr-1 h-3 w-3" /> Connect
-                </Button>
-              </div>
-            </li>
-          );
-        })}
-        {suggestions.length === 0 && (
-          <p className="text-xs text-muted-foreground">No suggestions yet.</p>
-        )}
-      </ul>
-      <Link to="/network" className="mt-3 block text-center text-xs text-primary hover:underline">
-        See all
-      </Link>
-    </div>
-  );
-}
 
 function TrendingCard() {
   return (
