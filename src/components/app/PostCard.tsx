@@ -80,11 +80,23 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
           <p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</p>
         </div>
         {post.author_id === currentUserId && (
-          <Button size="icon" variant="ghost" onClick={() => del.mutate()} aria-label="Delete">
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="icon" variant="ghost" aria-label="Post actions">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onClick={() => del.mutate()}
+              >
+                <Trash2 className="mr-2 h-4 w-4" /> Delete post
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
-      </header>
+
 
       <div className="whitespace-pre-wrap px-4 py-3 text-sm">{post.content}</div>
       {post.image_url && (
