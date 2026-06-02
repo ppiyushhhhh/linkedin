@@ -155,6 +155,15 @@ function NetworkPage() {
         <SummaryCard icon={<UserPlus className="h-4 w-4" />} label="Following" value={following.length} loading={loading} />
       </div>
 
+      {/* People You May Know - featured */}
+      <section className="mt-5">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-semibold">People you may know</h2>
+        </div>
+        <PeopleYouMayKnow variant="grid" limit={12} />
+      </section>
+
+
       {/* Search */}
       <div className="relative mt-4">
         <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
