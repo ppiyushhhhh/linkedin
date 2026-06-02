@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { Home, Users, Search, User as UserIcon, LogOut } from "lucide-react";
+import { Home, Users, Search, Bell, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -18,6 +18,8 @@ import { useState } from "react";
 const navItems = [
   { to: "/feed", label: "Home", icon: Home },
   { to: "/network", label: "Network", icon: Users },
+  { to: "/feed", label: "Post", icon: PlusSquare },
+  { to: "/notifications", label: "Alerts", icon: Bell },
   { to: "/search", label: "Search", icon: Search },
 ];
 
@@ -43,14 +45,14 @@ export function AppHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4">
-        <Link to="/feed" className="flex items-center gap-2 font-bold text-primary">
-          <img src={logo} alt="Linkden" className="h-8 w-8 rounded-md object-cover" />
-          <span className="hidden sm:inline">Linkden</span>
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:gap-3 sm:px-4">
+        <Link to="/feed" className="flex shrink-0 items-center gap-2 font-bold text-primary">
+          <img src={logo} alt="LinkUp World" className="h-8 w-8 rounded-md object-cover" />
+          <span className="hidden text-sm sm:inline">LinkUp World</span>
         </Link>
 
         <form
-          className="relative ml-2 hidden flex-1 max-w-sm md:block"
+          className="relative ml-1 hidden flex-1 max-w-sm md:block"
           onSubmit={(e) => {
             e.preventDefault();
             if (q.trim()) navigate({ to: "/search", search: { q: q.trim() } as any });
@@ -65,39 +67,44 @@ export function AppHeader() {
           />
         </form>
 
-        <nav className="ml-auto flex items-center gap-1">
+        <nav className="ml-auto hidden items-center gap-1 md:flex">
           {navItems.map((item) => (
             <Link
-              key={item.to}
+              key={item.label}
               to={item.to as any}
-              className="flex flex-col items-center rounded-md px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground [&.active]:text-primary"
+              className="flex min-w-[60px] flex-col items-center rounded-md px-2 py-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground [&.active]:text-primary [&.active]:border-b-2 [&.active]:border-primary"
               activeProps={{ className: "active" }}
+              activeOptions={{ exact: true }}
             >
               <item.icon className="h-5 w-5" />
-              <span className="hidden sm:block">{item.label}</span>
+              <span>{item.label}</span>
             </Link>
           ))}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="ml-1 outline-none">
-              <UserAvatar url={me?.avatar_url} name={fullName} className="h-8 w-8" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <div className="px-2 py-1.5">
-                <p className="text-sm font-semibold">{fullName}</p>
-                <p className="text-xs text-muted-foreground">@{me?.username}</p>
-              </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate({ to: "/u/$username", params: { username: me?.username ?? "" } })}>
-                <UserIcon className="mr-2 h-4 w-4" /> My profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>Settings</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={signOut} className="text-destructive">
-                <LogOut className="mr-2 h-4 w-4" /> Sign out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </nav>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger className="ml-auto outline-none md:ml-1">
+            <UserAvatar url={me?.avatar_url} name={fullName} className="h-8 w-8" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <div className="px-2 py-1.5">
+              <p className="text-sm font-semibold">{fullName}</p>
+              <p className="text-xs text-muted-foreground">@{me?.username}</p>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => navigate({ to: "/u/$username", params: { username: me?.username ?? "" } })}>
+              <UserIcon className="mr-2 h-4 w-4" /> View profile
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/feed" })}>
+              <Home className="mr-2 h-4 w-4" /> Home
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>Settings</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={signOut} className="text-destructive">
+              <LogOut className="mr-2 h-4 w-4" /> Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

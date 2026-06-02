@@ -9,7 +9,7 @@ import { UserAvatar } from "@/components/app/UserAvatar";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/feed")({
-  head: () => ({ meta: [{ title: "Feed — ConnectSphere" }] }),
+  head: () => ({ meta: [{ title: "Feed — LinkUp World" }] }),
   component: FeedPage,
 });
 

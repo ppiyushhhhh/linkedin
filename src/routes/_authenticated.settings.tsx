@@ -9,9 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { toast } from "sonner";
+import { BackButton } from "@/components/app/BackButton";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "Settings — ConnectSphere" }] }),
+  head: () => ({ meta: [{ title: "Settings — LinkUp World" }] }),
   component: SettingsPage,
 });
 
@@ -68,6 +69,7 @@ function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
+      <BackButton />
       <h1 className="text-2xl font-semibold">Edit profile</h1>
       <div className="mt-6 space-y-6 rounded-xl border bg-card p-6">
         <div className="flex items-center gap-4">
