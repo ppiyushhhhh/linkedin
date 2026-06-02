@@ -1,15 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MapPin, Briefcase, UserPlus, TrendingUp, Loader2 } from "lucide-react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { MapPin, Briefcase, TrendingUp, Loader2 } from "lucide-react";
 import { getFeed } from "@/lib/feed.functions";
 import { getMyProfile, getMyStats, getMyLatestExperience } from "@/lib/profile.functions";
-import { getSuggestions, sendConnectionRequest } from "@/lib/network.functions";
 import { PostComposer } from "@/components/app/PostComposer";
 import { PostCard } from "@/components/app/PostCard";
 import { PostSkeleton } from "@/components/app/PostSkeleton";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { PeopleYouMayKnow, PeopleYouMayKnowStrip } from "@/components/app/PeopleYouMayKnow";
+
 
 export const Route = createFileRoute("/_authenticated/feed")({
   head: () => ({ meta: [{ title: "Feed — LinkedIn" }] }),
