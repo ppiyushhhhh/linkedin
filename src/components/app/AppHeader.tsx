@@ -105,8 +105,9 @@ export function AppHeader() {
             <DropdownMenuItem onClick={signOut} className="text-destructive">
               <LogOut className="mr-2 h-4 w-4" /> Sign out
             </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </header>
   );
