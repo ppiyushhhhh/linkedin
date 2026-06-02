@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      certifications: {
+        Row: {
+          created_at: string
+          credential_url: string | null
+          id: string
+          issue_date: string | null
+          issuer: string
+          name: string
+          profile_id: string
+        }
+        Insert: {
+          created_at?: string
+          credential_url?: string | null
+          id?: string
+          issue_date?: string | null
+          issuer?: string
+          name: string
+          profile_id: string
+        }
+        Update: {
+          created_at?: string
+          credential_url?: string | null
+          id?: string
+          issue_date?: string | null
+          issuer?: string
+          name?: string
+          profile_id?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           author_id: string
@@ -315,6 +345,45 @@ export type Database = {
           updated_at?: string
           username?: string
           website?: string | null
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          created_at: string
+          description: string
+          github_url: string | null
+          id: string
+          image_url: string | null
+          live_url: string | null
+          profile_id: string
+          tech_stack: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          live_url?: string | null
+          profile_id: string
+          tech_stack?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          github_url?: string | null
+          id?: string
+          image_url?: string | null
+          live_url?: string | null
+          profile_id?: string
+          tech_stack?: string[]
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
