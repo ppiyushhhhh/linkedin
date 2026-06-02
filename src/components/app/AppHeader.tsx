@@ -105,6 +105,9 @@ export function AppHeader() {
             <DropdownMenuItem onClick={() => navigate({ to: "/feed" })}>
               <Home className="mr-2 h-4 w-4" /> Home
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/saved-posts" })}>
+              <Bookmark className="mr-2 h-4 w-4" /> Saved posts
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut} className="text-destructive">
