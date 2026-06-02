@@ -17,7 +17,9 @@ export type Database = {
       certifications: {
         Row: {
           created_at: string
+          credential_id: string | null
           credential_url: string | null
+          expiry_date: string | null
           id: string
           issue_date: string | null
           issuer: string
@@ -26,7 +28,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          credential_id?: string | null
           credential_url?: string | null
+          expiry_date?: string | null
           id?: string
           issue_date?: string | null
           issuer?: string
@@ -35,7 +39,9 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          credential_id?: string | null
           credential_url?: string | null
+          expiry_date?: string | null
           id?: string
           issue_date?: string | null
           issuer?: string
@@ -187,6 +193,7 @@ export type Database = {
           company: string
           created_at: string
           description: string | null
+          employment_type: string
           end_date: string | null
           id: string
           is_current: boolean
@@ -199,6 +206,7 @@ export type Database = {
           company: string
           created_at?: string
           description?: string | null
+          employment_type?: string
           end_date?: string | null
           id?: string
           is_current?: boolean
@@ -211,6 +219,7 @@ export type Database = {
           company?: string
           created_at?: string
           description?: string | null
+          employment_type?: string
           end_date?: string | null
           id?: string
           is_current?: boolean
@@ -301,6 +310,7 @@ export type Database = {
         Row: {
           about: string
           avatar_url: string | null
+          company: string
           cover_url: string | null
           created_at: string
           first_name: string
@@ -310,6 +320,7 @@ export type Database = {
           last_name: string
           linkedin_url: string | null
           location: string
+          portfolio_url: string | null
           updated_at: string
           username: string
           website: string | null
@@ -317,6 +328,7 @@ export type Database = {
         Insert: {
           about?: string
           avatar_url?: string | null
+          company?: string
           cover_url?: string | null
           created_at?: string
           first_name?: string
@@ -326,6 +338,7 @@ export type Database = {
           last_name?: string
           linkedin_url?: string | null
           location?: string
+          portfolio_url?: string | null
           updated_at?: string
           username: string
           website?: string | null
@@ -333,6 +346,7 @@ export type Database = {
         Update: {
           about?: string
           avatar_url?: string | null
+          company?: string
           cover_url?: string | null
           created_at?: string
           first_name?: string
@@ -342,6 +356,7 @@ export type Database = {
           last_name?: string
           linkedin_url?: string | null
           location?: string
+          portfolio_url?: string | null
           updated_at?: string
           username?: string
           website?: string | null
@@ -352,11 +367,13 @@ export type Database = {
         Row: {
           created_at: string
           description: string
+          end_date: string | null
           github_url: string | null
           id: string
           image_url: string | null
           live_url: string | null
           profile_id: string
+          start_date: string | null
           tech_stack: string[]
           title: string
           updated_at: string
@@ -364,11 +381,13 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string
+          end_date?: string | null
           github_url?: string | null
           id?: string
           image_url?: string | null
           live_url?: string | null
           profile_id: string
+          start_date?: string | null
           tech_stack?: string[]
           title: string
           updated_at?: string
@@ -376,11 +395,13 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string
+          end_date?: string | null
           github_url?: string | null
           id?: string
           image_url?: string | null
           live_url?: string | null
           profile_id?: string
+          start_date?: string | null
           tech_stack?: string[]
           title?: string
           updated_at?: string
@@ -427,18 +448,21 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          level: string | null
           name: string
           profile_id: string
         }
         Insert: {
           created_at?: string
           id?: string
+          level?: string | null
           name: string
           profile_id: string
         }
         Update: {
           created_at?: string
           id?: string
+          level?: string | null
           name?: string
           profile_id?: string
         }
