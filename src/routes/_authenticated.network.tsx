@@ -41,7 +41,9 @@ import {
 } from "lucide-react";
 import { BackButton } from "@/components/app/BackButton";
 import { MessageButton } from "@/components/app/MessageButton";
+import { PeopleYouMayKnow } from "@/components/app/PeopleYouMayKnow";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/_authenticated/network")({
   head: () => ({ meta: [{ title: "My Network — LinkedIn" }] }),
