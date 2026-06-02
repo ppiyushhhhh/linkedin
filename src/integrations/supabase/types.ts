@@ -324,6 +324,111 @@ export type Database = {
           },
         ]
       }
+      job_applications: {
+        Row: {
+          applicant_id: string
+          cover_note: string | null
+          created_at: string
+          id: string
+          job_id: string
+          portfolio_url: string | null
+          resume_url: string | null
+          status: string
+        }
+        Insert: {
+          applicant_id: string
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          job_id: string
+          portfolio_url?: string | null
+          resume_url?: string | null
+          status?: string
+        }
+        Update: {
+          applicant_id?: string
+          cover_note?: string | null
+          created_at?: string
+          id?: string
+          job_id?: string
+          portfolio_url?: string | null
+          resume_url?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          application_email: string | null
+          company_logo_url: string | null
+          company_name: string
+          created_at: string
+          currency: string
+          description: string
+          experience_level: string
+          external_apply_link: string | null
+          id: string
+          is_active: boolean
+          job_type: string
+          location: string
+          posted_by: string
+          requirements: string | null
+          responsibilities: string | null
+          salary_max: number | null
+          salary_min: number | null
+          skills: string[]
+          title: string
+          updated_at: string
+          workplace_type: string
+        }
+        Insert: {
+          application_email?: string | null
+          company_logo_url?: string | null
+          company_name: string
+          created_at?: string
+          currency?: string
+          description: string
+          experience_level?: string
+          external_apply_link?: string | null
+          id?: string
+          is_active?: boolean
+          job_type?: string
+          location?: string
+          posted_by: string
+          requirements?: string | null
+          responsibilities?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          skills?: string[]
+          title: string
+          updated_at?: string
+          workplace_type?: string
+        }
+        Update: {
+          application_email?: string | null
+          company_logo_url?: string | null
+          company_name?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          experience_level?: string
+          external_apply_link?: string | null
+          id?: string
+          is_active?: boolean
+          job_type?: string
+          location?: string
+          posted_by?: string
+          requirements?: string | null
+          responsibilities?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          skills?: string[]
+          title?: string
+          updated_at?: string
+          workplace_type?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string
@@ -573,6 +678,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      saved_jobs: {
+        Row: {
+          created_at: string
+          id: string
+          job_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       saved_posts: {
         Row: {
