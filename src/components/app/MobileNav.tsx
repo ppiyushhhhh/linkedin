@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Users, PlusSquare, Bell, User as UserIcon } from "lucide-react";
+import { Home, Users, Search, Bell, User as UserIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyProfile } from "@/lib/profile.functions";
 
@@ -10,7 +10,7 @@ export function MobileNav() {
   const items = [
     { to: "/feed", label: "Home", icon: Home, params: undefined as any },
     { to: "/network", label: "Network", icon: Users, params: undefined as any },
-    { to: "/feed", label: "Post", icon: PlusSquare, params: undefined as any, hash: "compose" },
+    { to: "/search", label: "Search", icon: Search, params: undefined as any },
     { to: "/notifications", label: "Alerts", icon: Bell, params: undefined as any },
     { to: "/u/$username", label: "Me", icon: UserIcon, params: { username } },
   ];
