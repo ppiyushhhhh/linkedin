@@ -65,19 +65,23 @@ function FeedPage() {
         )}
 
         {!feed.isLoading && posts.length === 0 && (
-          <div className="rounded-xl border bg-card p-10 text-center">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-              <TrendingUp className="h-6 w-6 text-muted-foreground" />
+          <>
+            <div className="rounded-xl border bg-card p-10 text-center">
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                <TrendingUp className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <p className="font-semibold">Your feed is empty</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Connect with people or create your first post to get started.
+              </p>
+              <Link to="/network" className="mt-4 inline-block">
+                <Button size="sm">Find people to connect with</Button>
+              </Link>
             </div>
-            <p className="font-semibold">Your feed is empty</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Connect with people or create your first post to get started.
-            </p>
-            <Link to="/network" className="mt-4 inline-block">
-              <Button size="sm">Find people to connect with</Button>
-            </Link>
-          </div>
+            <PeopleYouMayKnowStrip limit={6} />
+          </>
         )}
+
 
         {me && posts.map((p) => <PostCard key={p.id} post={p} currentUserId={me.id} />)}
 
