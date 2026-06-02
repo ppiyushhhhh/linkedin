@@ -96,6 +96,9 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
             </DropdownMenuContent>
           </DropdownMenu>
         )}
+      </header>
+
+
 
 
       <div className="whitespace-pre-wrap px-4 py-3 text-sm">{post.content}</div>
