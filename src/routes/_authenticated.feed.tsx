@@ -106,7 +106,7 @@ function FeedPage() {
 
       {/* Right sidebar */}
       <aside className="hidden lg:block space-y-4">
-        <SuggestionsCard suggestions={suggestions ?? []} />
+        <PeopleYouMayKnow variant="sidebar" limit={5} showSeeAll />
         <TrendingCard />
         <footer className="px-2 text-xs text-muted-foreground">
           <p>LinkedIn © {new Date().getFullYear()}</p>
