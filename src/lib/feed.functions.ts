@@ -92,6 +92,7 @@ export const createPost = createServerFn({ method: "POST" })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+    await notifyMentions({ text: data.content, actor_id: context.userId, entity_type: "post", entity_id: row.id });
     return { id: row.id };
   });
 
