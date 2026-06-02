@@ -3,7 +3,30 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
-const PROFILE_LITE = "id, username, first_name, last_name, headline, avatar_url, location";
+const PROFILE_LITE = "id, username, first_name, last_name, headline, avatar_url, location, company";
+
+export const getFollowGraph = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context;
+    const [{ data: followers }, { data: following }] = await Promise.all([
+      supabaseAdmin.from("follows").select("follower_id").eq("following_id", userId),
+      supabaseAdmin.from("follows").select("following_id").eq("follower_id", userId),
+    ]);
+    const followerIds = (followers ?? []).map((r: any) => r.follower_id);
+    const followingIds = (following ?? []).map((r: any) => r.following_id);
+    const all = Array.from(new Set([...followerIds, ...followingIds]));
+    const { data: profiles } = all.length
+      ? await supabaseAdmin.from("profiles").select(PROFILE_LITE).in("id", all)
+      : { data: [] as any[] };
+    const pmap = new Map<string, any>();
+    for (const p of profiles ?? []) pmap.set(p.id, p);
+    const followingSet = new Set(followingIds);
+    return {
+      followers: followerIds.map((id) => pmap.get(id)).filter(Boolean).map((p) => ({ ...p, i_follow: followingSet.has(p.id) })),
+      following: followingIds.map((id) => pmap.get(id)).filter(Boolean),
+    };
+  });
 
 export const getConnectionStatus = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
