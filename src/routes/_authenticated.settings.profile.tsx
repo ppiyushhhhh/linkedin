@@ -822,7 +822,7 @@ function ProjectDialog({ initial, onSaved }: { initial?: any; onSaved: () => voi
           id: initial?.id,
           title: form.title,
           description: form.description,
-          tech_stack: form.tech.split(",").map((t) => t.trim()).filter(Boolean).slice(0, 20),
+          tech_stack: form.tech.split(",").map((t: string) => t.trim()).filter(Boolean).slice(0, 20),
           live_url: form.live_url || undefined,
           github_url: form.github_url || undefined,
           start_date: form.start_date || null,
