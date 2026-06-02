@@ -191,9 +191,18 @@ export const deleteEducation = createServerFn({ method: "POST" })
 // Skills
 export const addSkill = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ name: z.string().trim().min(1).max(60) }).parse(d))
+  .inputValidator((d) =>
+    z
+      .object({
+        name: z.string().trim().min(1).max(60),
+        level: z.enum(["Beginner", "Intermediate", "Advanced"]).nullable().optional(),
+      })
+      .parse(d)
+  )
   .handler(async ({ data, context }) => {
-    const { error } = await context.supabase.from("skills").insert({ profile_id: context.userId, name: data.name });
+    const { error } = await context.supabase
+      .from("skills" as any)
+      .insert({ profile_id: context.userId, name: data.name, level: data.level ?? null });
     if (error && !error.message.includes("duplicate")) throw new Error(error.message);
     return { ok: true };
   });
