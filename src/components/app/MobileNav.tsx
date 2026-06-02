@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Home, Users, Bell, User as UserIcon, MessageSquare } from "lucide-react";
+import { Home, Users, Briefcase, Bell, MessageSquare } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getMyProfile } from "@/lib/profile.functions";
 import { getUnreadMessageCount } from "@/lib/messages.functions";
@@ -14,12 +14,13 @@ export function MobileNav() {
   const msgCount = unreadMsgs?.count ?? 0;
   const username = me?.username ?? "";
 
+  void username;
   const items = [
     { to: "/feed", label: "Home", icon: Home, params: undefined as any, badge: 0 },
     { to: "/network", label: "Network", icon: Users, params: undefined as any, badge: 0 },
+    { to: "/jobs", label: "Jobs", icon: Briefcase, params: undefined as any, badge: 0 },
     { to: "/messages", label: "Chat", icon: MessageSquare, params: undefined as any, badge: msgCount },
     { to: "/notifications", label: "Alerts", icon: Bell, params: undefined as any, badge: 0 },
-    { to: "/u/$username", label: "Me", icon: UserIcon, params: { username }, badge: 0 },
   ];
 
   return (

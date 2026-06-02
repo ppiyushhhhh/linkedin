@@ -18,14 +18,20 @@ import { Route as UUsernameRouteImport } from './routes/u.$username'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated.settings'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated.search'
 import { Route as AuthenticatedSavedPostsRouteImport } from './routes/_authenticated.saved-posts'
+import { Route as AuthenticatedSavedJobsRouteImport } from './routes/_authenticated.saved-jobs'
+import { Route as AuthenticatedPostJobRouteImport } from './routes/_authenticated.post-job'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedNetworkRouteImport } from './routes/_authenticated.network'
+import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated.my-applications'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
+import { Route as AuthenticatedJobsRouteImport } from './routes/_authenticated.jobs'
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated.feed'
 import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated.messages.index'
+import { Route as AuthenticatedJobsIndexRouteImport } from './routes/_authenticated.jobs.index'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated.settings.profile'
 import { Route as AuthenticatedPostIdRouteImport } from './routes/_authenticated.post.$id'
 import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated.messages.$conversationId'
+import { Route as AuthenticatedJobsIdRouteImport } from './routes/_authenticated.jobs.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -71,6 +77,16 @@ const AuthenticatedSavedPostsRoute = AuthenticatedSavedPostsRouteImport.update({
   path: '/saved-posts',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedSavedJobsRoute = AuthenticatedSavedJobsRouteImport.update({
+  id: '/saved-jobs',
+  path: '/saved-jobs',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPostJobRoute = AuthenticatedPostJobRouteImport.update({
+  id: '/post-job',
+  path: '/post-job',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedNotificationsRoute =
   AuthenticatedNotificationsRouteImport.update({
     id: '/notifications',
@@ -82,9 +98,20 @@ const AuthenticatedNetworkRoute = AuthenticatedNetworkRouteImport.update({
   path: '/network',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMyApplicationsRoute =
+  AuthenticatedMyApplicationsRouteImport.update({
+    id: '/my-applications',
+    path: '/my-applications',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedJobsRoute = AuthenticatedJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedFeedRoute = AuthenticatedFeedRouteImport.update({
@@ -98,6 +125,11 @@ const AuthenticatedMessagesIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedMessagesRoute,
   } as any)
+const AuthenticatedJobsIndexRoute = AuthenticatedJobsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedJobsRoute,
+} as any)
 const AuthenticatedSettingsProfileRoute =
   AuthenticatedSettingsProfileRouteImport.update({
     id: '/profile',
@@ -115,6 +147,11 @@ const AuthenticatedMessagesConversationIdRoute =
     path: '/$conversationId',
     getParentRoute: () => AuthenticatedMessagesRoute,
   } as any)
+const AuthenticatedJobsIdRoute = AuthenticatedJobsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedJobsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -122,16 +159,22 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/feed': typeof AuthenticatedFeedRoute
+  '/jobs': typeof AuthenticatedJobsRouteWithChildren
   '/messages': typeof AuthenticatedMessagesRouteWithChildren
+  '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/network': typeof AuthenticatedNetworkRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/post-job': typeof AuthenticatedPostJobRoute
+  '/saved-jobs': typeof AuthenticatedSavedJobsRoute
   '/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/jobs/$id': typeof AuthenticatedJobsIdRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/jobs/': typeof AuthenticatedJobsIndexRoute
   '/messages/': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -140,15 +183,20 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/feed': typeof AuthenticatedFeedRoute
+  '/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/network': typeof AuthenticatedNetworkRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/post-job': typeof AuthenticatedPostJobRoute
+  '/saved-jobs': typeof AuthenticatedSavedJobsRoute
   '/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/jobs/$id': typeof AuthenticatedJobsIdRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/jobs': typeof AuthenticatedJobsIndexRoute
   '/messages': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRoutesById {
@@ -159,16 +207,22 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_authenticated/feed': typeof AuthenticatedFeedRoute
+  '/_authenticated/jobs': typeof AuthenticatedJobsRouteWithChildren
   '/_authenticated/messages': typeof AuthenticatedMessagesRouteWithChildren
+  '/_authenticated/my-applications': typeof AuthenticatedMyApplicationsRoute
   '/_authenticated/network': typeof AuthenticatedNetworkRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/post-job': typeof AuthenticatedPostJobRoute
+  '/_authenticated/saved-jobs': typeof AuthenticatedSavedJobsRoute
   '/_authenticated/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/_authenticated/jobs/$id': typeof AuthenticatedJobsIdRoute
   '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_authenticated/post/$id': typeof AuthenticatedPostIdRoute
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
+  '/_authenticated/jobs/': typeof AuthenticatedJobsIndexRoute
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRouteTypes {
@@ -179,16 +233,22 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/feed'
+    | '/jobs'
     | '/messages'
+    | '/my-applications'
     | '/network'
     | '/notifications'
+    | '/post-job'
+    | '/saved-jobs'
     | '/saved-posts'
     | '/search'
     | '/settings'
     | '/u/$username'
+    | '/jobs/$id'
     | '/messages/$conversationId'
     | '/post/$id'
     | '/settings/profile'
+    | '/jobs/'
     | '/messages/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -197,15 +257,20 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/feed'
+    | '/my-applications'
     | '/network'
     | '/notifications'
+    | '/post-job'
+    | '/saved-jobs'
     | '/saved-posts'
     | '/search'
     | '/settings'
     | '/u/$username'
+    | '/jobs/$id'
     | '/messages/$conversationId'
     | '/post/$id'
     | '/settings/profile'
+    | '/jobs'
     | '/messages'
   id:
     | '__root__'
@@ -215,16 +280,22 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signup'
     | '/_authenticated/feed'
+    | '/_authenticated/jobs'
     | '/_authenticated/messages'
+    | '/_authenticated/my-applications'
     | '/_authenticated/network'
     | '/_authenticated/notifications'
+    | '/_authenticated/post-job'
+    | '/_authenticated/saved-jobs'
     | '/_authenticated/saved-posts'
     | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/u/$username'
+    | '/_authenticated/jobs/$id'
     | '/_authenticated/messages/$conversationId'
     | '/_authenticated/post/$id'
     | '/_authenticated/settings/profile'
+    | '/_authenticated/jobs/'
     | '/_authenticated/messages/'
   fileRoutesById: FileRoutesById
 }
@@ -302,6 +373,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSavedPostsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/saved-jobs': {
+      id: '/_authenticated/saved-jobs'
+      path: '/saved-jobs'
+      fullPath: '/saved-jobs'
+      preLoaderRoute: typeof AuthenticatedSavedJobsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/post-job': {
+      id: '/_authenticated/post-job'
+      path: '/post-job'
+      fullPath: '/post-job'
+      preLoaderRoute: typeof AuthenticatedPostJobRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/notifications': {
       id: '/_authenticated/notifications'
       path: '/notifications'
@@ -316,11 +401,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNetworkRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/my-applications': {
+      id: '/_authenticated/my-applications'
+      path: '/my-applications'
+      fullPath: '/my-applications'
+      preLoaderRoute: typeof AuthenticatedMyApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/messages': {
       id: '/_authenticated/messages'
       path: '/messages'
       fullPath: '/messages'
       preLoaderRoute: typeof AuthenticatedMessagesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/jobs': {
+      id: '/_authenticated/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof AuthenticatedJobsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/feed': {
@@ -336,6 +435,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/messages/'
       preLoaderRoute: typeof AuthenticatedMessagesIndexRouteImport
       parentRoute: typeof AuthenticatedMessagesRoute
+    }
+    '/_authenticated/jobs/': {
+      id: '/_authenticated/jobs/'
+      path: '/'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof AuthenticatedJobsIndexRouteImport
+      parentRoute: typeof AuthenticatedJobsRoute
     }
     '/_authenticated/settings/profile': {
       id: '/_authenticated/settings/profile'
@@ -358,8 +464,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMessagesConversationIdRouteImport
       parentRoute: typeof AuthenticatedMessagesRoute
     }
+    '/_authenticated/jobs/$id': {
+      id: '/_authenticated/jobs/$id'
+      path: '/$id'
+      fullPath: '/jobs/$id'
+      preLoaderRoute: typeof AuthenticatedJobsIdRouteImport
+      parentRoute: typeof AuthenticatedJobsRoute
+    }
   }
 }
+
+interface AuthenticatedJobsRouteChildren {
+  AuthenticatedJobsIdRoute: typeof AuthenticatedJobsIdRoute
+  AuthenticatedJobsIndexRoute: typeof AuthenticatedJobsIndexRoute
+}
+
+const AuthenticatedJobsRouteChildren: AuthenticatedJobsRouteChildren = {
+  AuthenticatedJobsIdRoute: AuthenticatedJobsIdRoute,
+  AuthenticatedJobsIndexRoute: AuthenticatedJobsIndexRoute,
+}
+
+const AuthenticatedJobsRouteWithChildren =
+  AuthenticatedJobsRoute._addFileChildren(AuthenticatedJobsRouteChildren)
 
 interface AuthenticatedMessagesRouteChildren {
   AuthenticatedMessagesConversationIdRoute: typeof AuthenticatedMessagesConversationIdRoute
@@ -392,9 +518,13 @@ const AuthenticatedSettingsRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
+  AuthenticatedJobsRoute: typeof AuthenticatedJobsRouteWithChildren
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRouteWithChildren
+  AuthenticatedMyApplicationsRoute: typeof AuthenticatedMyApplicationsRoute
   AuthenticatedNetworkRoute: typeof AuthenticatedNetworkRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedPostJobRoute: typeof AuthenticatedPostJobRoute
+  AuthenticatedSavedJobsRoute: typeof AuthenticatedSavedJobsRoute
   AuthenticatedSavedPostsRoute: typeof AuthenticatedSavedPostsRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
@@ -403,9 +533,13 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFeedRoute: AuthenticatedFeedRoute,
+  AuthenticatedJobsRoute: AuthenticatedJobsRouteWithChildren,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRouteWithChildren,
+  AuthenticatedMyApplicationsRoute: AuthenticatedMyApplicationsRoute,
   AuthenticatedNetworkRoute: AuthenticatedNetworkRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedPostJobRoute: AuthenticatedPostJobRoute,
+  AuthenticatedSavedJobsRoute: AuthenticatedSavedJobsRoute,
   AuthenticatedSavedPostsRoute: AuthenticatedSavedPostsRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
