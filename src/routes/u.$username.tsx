@@ -312,10 +312,16 @@ function ProfilePage() {
         {(extras?.posts.length ?? 0) === 0 && <Empty msg="No posts yet." />}
         <ul className="space-y-3">
           {(extras?.posts ?? []).map((p: any) => (
-            <li key={p.id} className="rounded-lg border p-3">
-              <p className="whitespace-pre-wrap text-sm">{p.content}</p>
-              {p.image_url && <img src={p.image_url} alt="" className="mt-2 max-h-72 rounded-md object-cover" />}
-              <p className="mt-2 text-xs text-muted-foreground">{new Date(p.created_at).toLocaleString()}</p>
+            <li key={p.id}>
+              <Link
+                to="/post/$id"
+                params={{ id: p.id }}
+                className="block rounded-lg border p-3 transition-colors hover:border-primary/40 hover:bg-muted/30"
+              >
+                <p className="whitespace-pre-wrap text-sm">{p.content}</p>
+                {p.image_url && <img src={p.image_url} alt="" className="mt-2 max-h-72 rounded-md object-cover" />}
+                <p className="mt-2 text-xs text-muted-foreground">{new Date(p.created_at).toLocaleString()}</p>
+              </Link>
             </li>
           ))}
         </ul>
