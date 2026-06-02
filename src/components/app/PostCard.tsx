@@ -116,7 +116,7 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
       ) : null}
 
       <div className="border-t px-2 py-1">
-        <div className="relative grid grid-cols-2">
+        <div className="relative grid grid-cols-4">
           <div
             className="relative"
             onMouseEnter={() => setShowPicker(true)}
@@ -128,10 +128,10 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
               onClick={() => react.mutate(currentReaction?.type ?? "like")}
             >
               <MainIcon className="h-4 w-4" />
-              {currentReaction?.label ?? "Like"}
+              <span className="hidden sm:inline">{currentReaction?.label ?? "Like"}</span>
             </Button>
             {showPicker && (
-              <div className="absolute bottom-full left-1/2 mb-1 flex -translate-x-1/2 gap-1 rounded-full border bg-popover p-1 shadow-md">
+              <div className="absolute bottom-full left-1/2 z-10 mb-1 flex -translate-x-1/2 gap-1 rounded-full border bg-popover p-1 shadow-md">
                 {REACTIONS.map(({ type, Icon, label, color }) => (
                   <button
                     key={type}
@@ -149,10 +149,25 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
             )}
           </div>
           <Button variant="ghost" className="justify-center gap-2" onClick={() => setShowComments((s) => !s)}>
-            <MessageSquare className="h-4 w-4" /> Comment
+            <MessageSquare className="h-4 w-4" /> <span className="hidden sm:inline">Comment</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="justify-center gap-2"
+            onClick={() => toast.info("Repost coming soon")}
+          >
+            <Repeat2 className="h-4 w-4" /> <span className="hidden sm:inline">Repost</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="justify-center gap-2"
+            onClick={() => toast.success("Post saved")}
+          >
+            <Bookmark className="h-4 w-4" /> <span className="hidden sm:inline">Save</span>
           </Button>
         </div>
       </div>
+
 
       {showComments && <Comments postId={post.id} currentUserId={currentUserId} />}
     </article>
