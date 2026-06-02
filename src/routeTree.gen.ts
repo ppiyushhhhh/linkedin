@@ -19,6 +19,9 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated.search'
 import { Route as AuthenticatedSavedPostsRouteImport } from './routes/_authenticated.saved-posts'
 import { Route as AuthenticatedSavedJobsRouteImport } from './routes/_authenticated.saved-jobs'
+import { Route as AuthenticatedResumePreviewRouteImport } from './routes/_authenticated.resume-preview'
+import { Route as AuthenticatedResumeDownloadRouteImport } from './routes/_authenticated.resume-download'
+import { Route as AuthenticatedResumeBuilderRouteImport } from './routes/_authenticated.resume-builder'
 import { Route as AuthenticatedPostJobRouteImport } from './routes/_authenticated.post-job'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedNetworkRouteImport } from './routes/_authenticated.network'
@@ -82,6 +85,24 @@ const AuthenticatedSavedJobsRoute = AuthenticatedSavedJobsRouteImport.update({
   path: '/saved-jobs',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedResumePreviewRoute =
+  AuthenticatedResumePreviewRouteImport.update({
+    id: '/resume-preview',
+    path: '/resume-preview',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedResumeDownloadRoute =
+  AuthenticatedResumeDownloadRouteImport.update({
+    id: '/resume-download',
+    path: '/resume-download',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedResumeBuilderRoute =
+  AuthenticatedResumeBuilderRouteImport.update({
+    id: '/resume-builder',
+    path: '/resume-builder',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedPostJobRoute = AuthenticatedPostJobRouteImport.update({
   id: '/post-job',
   path: '/post-job',
@@ -165,6 +186,9 @@ export interface FileRoutesByFullPath {
   '/network': typeof AuthenticatedNetworkRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/post-job': typeof AuthenticatedPostJobRoute
+  '/resume-builder': typeof AuthenticatedResumeBuilderRoute
+  '/resume-download': typeof AuthenticatedResumeDownloadRoute
+  '/resume-preview': typeof AuthenticatedResumePreviewRoute
   '/saved-jobs': typeof AuthenticatedSavedJobsRoute
   '/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/search': typeof AuthenticatedSearchRoute
@@ -187,6 +211,9 @@ export interface FileRoutesByTo {
   '/network': typeof AuthenticatedNetworkRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/post-job': typeof AuthenticatedPostJobRoute
+  '/resume-builder': typeof AuthenticatedResumeBuilderRoute
+  '/resume-download': typeof AuthenticatedResumeDownloadRoute
+  '/resume-preview': typeof AuthenticatedResumePreviewRoute
   '/saved-jobs': typeof AuthenticatedSavedJobsRoute
   '/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/search': typeof AuthenticatedSearchRoute
@@ -213,6 +240,9 @@ export interface FileRoutesById {
   '/_authenticated/network': typeof AuthenticatedNetworkRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/post-job': typeof AuthenticatedPostJobRoute
+  '/_authenticated/resume-builder': typeof AuthenticatedResumeBuilderRoute
+  '/_authenticated/resume-download': typeof AuthenticatedResumeDownloadRoute
+  '/_authenticated/resume-preview': typeof AuthenticatedResumePreviewRoute
   '/_authenticated/saved-jobs': typeof AuthenticatedSavedJobsRoute
   '/_authenticated/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
@@ -239,6 +269,9 @@ export interface FileRouteTypes {
     | '/network'
     | '/notifications'
     | '/post-job'
+    | '/resume-builder'
+    | '/resume-download'
+    | '/resume-preview'
     | '/saved-jobs'
     | '/saved-posts'
     | '/search'
@@ -261,6 +294,9 @@ export interface FileRouteTypes {
     | '/network'
     | '/notifications'
     | '/post-job'
+    | '/resume-builder'
+    | '/resume-download'
+    | '/resume-preview'
     | '/saved-jobs'
     | '/saved-posts'
     | '/search'
@@ -286,6 +322,9 @@ export interface FileRouteTypes {
     | '/_authenticated/network'
     | '/_authenticated/notifications'
     | '/_authenticated/post-job'
+    | '/_authenticated/resume-builder'
+    | '/_authenticated/resume-download'
+    | '/_authenticated/resume-preview'
     | '/_authenticated/saved-jobs'
     | '/_authenticated/saved-posts'
     | '/_authenticated/search'
@@ -378,6 +417,27 @@ declare module '@tanstack/react-router' {
       path: '/saved-jobs'
       fullPath: '/saved-jobs'
       preLoaderRoute: typeof AuthenticatedSavedJobsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/resume-preview': {
+      id: '/_authenticated/resume-preview'
+      path: '/resume-preview'
+      fullPath: '/resume-preview'
+      preLoaderRoute: typeof AuthenticatedResumePreviewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/resume-download': {
+      id: '/_authenticated/resume-download'
+      path: '/resume-download'
+      fullPath: '/resume-download'
+      preLoaderRoute: typeof AuthenticatedResumeDownloadRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/resume-builder': {
+      id: '/_authenticated/resume-builder'
+      path: '/resume-builder'
+      fullPath: '/resume-builder'
+      preLoaderRoute: typeof AuthenticatedResumeBuilderRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/post-job': {
@@ -524,6 +584,9 @@ interface AuthenticatedRouteChildren {
   AuthenticatedNetworkRoute: typeof AuthenticatedNetworkRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPostJobRoute: typeof AuthenticatedPostJobRoute
+  AuthenticatedResumeBuilderRoute: typeof AuthenticatedResumeBuilderRoute
+  AuthenticatedResumeDownloadRoute: typeof AuthenticatedResumeDownloadRoute
+  AuthenticatedResumePreviewRoute: typeof AuthenticatedResumePreviewRoute
   AuthenticatedSavedJobsRoute: typeof AuthenticatedSavedJobsRoute
   AuthenticatedSavedPostsRoute: typeof AuthenticatedSavedPostsRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
@@ -539,6 +602,9 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedNetworkRoute: AuthenticatedNetworkRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPostJobRoute: AuthenticatedPostJobRoute,
+  AuthenticatedResumeBuilderRoute: AuthenticatedResumeBuilderRoute,
+  AuthenticatedResumeDownloadRoute: AuthenticatedResumeDownloadRoute,
+  AuthenticatedResumePreviewRoute: AuthenticatedResumePreviewRoute,
   AuthenticatedSavedJobsRoute: AuthenticatedSavedJobsRoute,
   AuthenticatedSavedPostsRoute: AuthenticatedSavedPostsRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
@@ -561,13 +627,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
