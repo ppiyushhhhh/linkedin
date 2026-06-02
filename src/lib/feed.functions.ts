@@ -140,11 +140,11 @@ async function enrichPosts(
   for (const c of comments ?? [])
     commentMap.set(c.post_id, (commentMap.get(c.post_id) ?? 0) + 1);
   const repostMap = new Map<string, number>();
-  for (const r of reposts ?? [])
-    repostMap.set(
-      r.repost_of_id,
-      (repostMap.get(r.repost_of_id) ?? 0) + 1,
-    );
+  for (const r of reposts ?? []) {
+    const target = (r as any).repost_of_id;
+    if (!target) continue;
+    repostMap.set(target, (repostMap.get(target) ?? 0) + 1);
+  }
   const savedSet = new Set<string>((saved ?? []).map((s: any) => s.post_id));
 
   return rawPosts.map((p) => {
