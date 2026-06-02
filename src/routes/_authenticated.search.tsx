@@ -46,6 +46,8 @@ import {
 } from "@/components/ui/sheet";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { BackButton } from "@/components/app/BackButton";
+import { PeopleYouMayKnow } from "@/components/app/PeopleYouMayKnow";
+
 import {
   searchAll,
   type SearchPerson,
