@@ -106,7 +106,7 @@ function ProfilePage() {
             {me && (
               <div className="flex flex-wrap gap-2">
                 {isSelf ? (
-                  <Link to="/settings"><Button variant="outline"><Pencil className="mr-1 h-4 w-4" />Edit profile</Button></Link>
+                  <Link to="/settings/profile"><Button variant="outline"><Pencil className="mr-1 h-4 w-4" />Edit profile</Button></Link>
                 ) : (
                   <>
                     {status?.status === "accepted" && (
