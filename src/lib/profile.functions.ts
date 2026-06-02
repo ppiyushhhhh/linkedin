@@ -19,6 +19,35 @@ export const getMyProfile = createServerFn({ method: "GET" })
     return data;
   });
 
+export const getMyStats = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context;
+    const [{ count: followers }, { count: following }, { count: connections }] = await Promise.all([
+      supabaseAdmin.from("follows").select("*", { count: "exact", head: true }).eq("following_id", userId),
+      supabaseAdmin.from("follows").select("*", { count: "exact", head: true }).eq("follower_id", userId),
+      supabaseAdmin
+        .from("connections")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "accepted")
+        .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`),
+    ]);
+    return { followers: followers ?? 0, following: following ?? 0, connections: connections ?? 0 };
+  });
+
+export const getMyLatestExperience = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data } = await supabaseAdmin
+      .from("experiences")
+      .select("title, company")
+      .eq("profile_id", context.userId)
+      .order("start_date", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    return data;
+  });
+
 export const getProfileByUsername = createServerFn({ method: "GET" })
   .inputValidator((d) => z.object({ username: z.string().min(1).max(64) }).parse(d))
   .handler(async ({ data }) => {
