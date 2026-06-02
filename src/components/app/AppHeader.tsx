@@ -1,10 +1,11 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { Home, Users, Search, Bell, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
+import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyProfile } from "@/lib/profile.functions";
 import { UserAvatar } from "./UserAvatar";
+import { NotificationBell } from "./NotificationBell";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +20,6 @@ const navItems = [
   { to: "/feed", label: "Home", icon: Home },
   { to: "/network", label: "Network", icon: Users },
   { to: "/feed", label: "Post", icon: PlusSquare },
-  { to: "/notifications", label: "Alerts", icon: Bell },
   { to: "/search", label: "Search", icon: Search },
 ];
 
@@ -82,10 +82,12 @@ export function AppHeader() {
           ))}
         </nav>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="ml-auto outline-none md:ml-1">
-            <UserAvatar url={me?.avatar_url} name={fullName} className="h-8 w-8" />
-          </DropdownMenuTrigger>
+        <div className="ml-auto flex items-center gap-1 md:ml-1">
+          <NotificationBell />
+          <DropdownMenu>
+            <DropdownMenuTrigger className="outline-none">
+              <UserAvatar url={me?.avatar_url} name={fullName} className="h-8 w-8" />
+            </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <div className="px-2 py-1.5">
               <p className="text-sm font-semibold">{fullName}</p>
@@ -103,8 +105,9 @@ export function AppHeader() {
             <DropdownMenuItem onClick={signOut} className="text-destructive">
               <LogOut className="mr-2 h-4 w-4" /> Sign out
             </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </header>
   );

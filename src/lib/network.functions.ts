@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { createNotification } from "./notifications.server";
 
 const PROFILE_LITE = "id, username, first_name, last_name, headline, avatar_url, location, company";
 
@@ -58,6 +59,13 @@ export const sendConnectionRequest = createServerFn({ method: "POST" })
     if (data.addressee_id === context.userId) throw new Error("Cannot connect with yourself");
     const { error } = await context.supabase.from("connections").insert({ requester_id: context.userId, addressee_id: data.addressee_id, status: "pending" });
     if (error && !error.message.includes("duplicate")) throw new Error(error.message);
+    await createNotification({
+      recipient_id: data.addressee_id,
+      actor_id: context.userId,
+      type: "connection_request",
+      entity_type: "connection",
+      dedupe: true,
+    });
     return { ok: true };
   });
 
@@ -68,6 +76,12 @@ export const respondConnection = createServerFn({ method: "POST" })
     if (data.accept) {
       const { error } = await context.supabase.from("connections").update({ status: "accepted" }).eq("requester_id", data.requester_id).eq("addressee_id", context.userId);
       if (error) throw new Error(error.message);
+      await createNotification({
+        recipient_id: data.requester_id,
+        actor_id: context.userId,
+        type: "connection_accepted",
+        entity_type: "connection",
+      });
     } else {
       const { error } = await context.supabase.from("connections").delete().eq("requester_id", data.requester_id).eq("addressee_id", context.userId);
       if (error) throw new Error(error.message);
@@ -95,12 +109,20 @@ export const toggleFollow = createServerFn({ method: "POST" })
     if (data.follow) {
       const { error } = await context.supabase.from("follows").insert({ follower_id: context.userId, following_id: data.profile_id });
       if (error && !error.message.includes("duplicate")) throw new Error(error.message);
+      await createNotification({
+        recipient_id: data.profile_id,
+        actor_id: context.userId,
+        type: "follow",
+        entity_type: "profile",
+        dedupe: true,
+      });
     } else {
       const { error } = await context.supabase.from("follows").delete().eq("follower_id", context.userId).eq("following_id", data.profile_id);
       if (error) throw new Error(error.message);
     }
     return { ok: true };
   });
+
 
 export const getMyConnections = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
