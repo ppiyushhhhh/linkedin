@@ -78,14 +78,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Linkden" },
+      { name: "description", content: "ConnectSphere Pro is an enterprise-grade professional networking platform for building connections and careers." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Linkden" },
+      { property: "og:description", content: "ConnectSphere Pro is an enterprise-grade professional networking platform for building connections and careers." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Linkden" },
+      { name: "twitter:description", content: "ConnectSphere Pro is an enterprise-grade professional networking platform for building connections and careers." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0de80f87-9d87-434d-ad16-2e7492b3b379/id-preview-fe6e1808--09c3e9fe-d608-4cba-a1e9-d3a3b5d47294.lovable.app-1780166225927.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0de80f87-9d87-434d-ad16-2e7492b3b379/id-preview-fe6e1808--09c3e9fe-d608-4cba-a1e9-d3a3b5d47294.lovable.app-1780166225927.png" },
     ],
     links: [
       {
