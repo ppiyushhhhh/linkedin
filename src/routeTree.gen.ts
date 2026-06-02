@@ -20,18 +20,18 @@ import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedSavedPostsRouteImport } from './routes/_authenticated.saved-posts'
 import { Route as AuthenticatedSavedJobsRouteImport } from './routes/_authenticated.saved-jobs'
 import { Route as AuthenticatedPostJobRouteImport } from './routes/_authenticated.post-job'
+import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated.my-applications'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedNetworkRouteImport } from './routes/_authenticated.network'
-import { Route as AuthenticatedMyApplicationsRouteImport } from './routes/_authenticated.my-applications'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
 import { Route as AuthenticatedJobsRouteImport } from './routes/_authenticated.jobs'
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated.feed'
-import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated.messages.index'
 import { Route as AuthenticatedJobsIndexRouteImport } from './routes/_authenticated.jobs.index'
+import { Route as AuthenticatedJobsIdRouteImport } from './routes/_authenticated.jobs.$id'
+import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated.messages.index'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated.settings.profile'
 import { Route as AuthenticatedPostIdRouteImport } from './routes/_authenticated.post.$id'
 import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated.messages.$conversationId'
-import { Route as AuthenticatedJobsIdRouteImport } from './routes/_authenticated.jobs.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -87,6 +87,11 @@ const AuthenticatedPostJobRoute = AuthenticatedPostJobRouteImport.update({
   path: '/post-job',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMyApplicationsRoute = AuthenticatedMyApplicationsRouteImport.update({
+  id: '/my-applications',
+  path: '/my-applications',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedNotificationsRoute =
   AuthenticatedNotificationsRouteImport.update({
     id: '/notifications',
@@ -98,12 +103,6 @@ const AuthenticatedNetworkRoute = AuthenticatedNetworkRouteImport.update({
   path: '/network',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedMyApplicationsRoute =
-  AuthenticatedMyApplicationsRouteImport.update({
-    id: '/my-applications',
-    path: '/my-applications',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
 const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -119,17 +118,22 @@ const AuthenticatedFeedRoute = AuthenticatedFeedRouteImport.update({
   path: '/feed',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedJobsIndexRoute = AuthenticatedJobsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedJobsRoute,
+} as any)
+const AuthenticatedJobsIdRoute = AuthenticatedJobsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedJobsRoute,
+} as any)
 const AuthenticatedMessagesIndexRoute =
   AuthenticatedMessagesIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedMessagesRoute,
   } as any)
-const AuthenticatedJobsIndexRoute = AuthenticatedJobsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedJobsRoute,
-} as any)
 const AuthenticatedSettingsProfileRoute =
   AuthenticatedSettingsProfileRouteImport.update({
     id: '/profile',
@@ -147,11 +151,6 @@ const AuthenticatedMessagesConversationIdRoute =
     path: '/$conversationId',
     getParentRoute: () => AuthenticatedMessagesRoute,
   } as any)
-const AuthenticatedJobsIdRoute = AuthenticatedJobsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthenticatedJobsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -171,10 +170,10 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
   '/jobs/$id': typeof AuthenticatedJobsIdRoute
+  '/jobs/': typeof AuthenticatedJobsIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
-  '/jobs/': typeof AuthenticatedJobsIndexRoute
   '/messages/': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -193,10 +192,10 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
   '/jobs/$id': typeof AuthenticatedJobsIdRoute
+  '/jobs': typeof AuthenticatedJobsIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
-  '/jobs': typeof AuthenticatedJobsIndexRoute
   '/messages': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRoutesById {
@@ -219,10 +218,10 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
   '/_authenticated/jobs/$id': typeof AuthenticatedJobsIdRoute
+  '/_authenticated/jobs/': typeof AuthenticatedJobsIndexRoute
   '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_authenticated/post/$id': typeof AuthenticatedPostIdRoute
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
-  '/_authenticated/jobs/': typeof AuthenticatedJobsIndexRoute
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
 }
 export interface FileRouteTypes {
@@ -245,10 +244,10 @@ export interface FileRouteTypes {
     | '/settings'
     | '/u/$username'
     | '/jobs/$id'
+    | '/jobs/'
     | '/messages/$conversationId'
     | '/post/$id'
     | '/settings/profile'
-    | '/jobs/'
     | '/messages/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -267,10 +266,10 @@ export interface FileRouteTypes {
     | '/settings'
     | '/u/$username'
     | '/jobs/$id'
+    | '/jobs'
     | '/messages/$conversationId'
     | '/post/$id'
     | '/settings/profile'
-    | '/jobs'
     | '/messages'
   id:
     | '__root__'
@@ -292,10 +291,10 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/u/$username'
     | '/_authenticated/jobs/$id'
+    | '/_authenticated/jobs/'
     | '/_authenticated/messages/$conversationId'
     | '/_authenticated/post/$id'
     | '/_authenticated/settings/profile'
-    | '/_authenticated/jobs/'
     | '/_authenticated/messages/'
   fileRoutesById: FileRoutesById
 }
@@ -387,6 +386,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPostJobRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/my-applications': {
+      id: '/_authenticated/my-applications'
+      path: '/my-applications'
+      fullPath: '/my-applications'
+      preLoaderRoute: typeof AuthenticatedMyApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/notifications': {
       id: '/_authenticated/notifications'
       path: '/notifications'
@@ -399,13 +405,6 @@ declare module '@tanstack/react-router' {
       path: '/network'
       fullPath: '/network'
       preLoaderRoute: typeof AuthenticatedNetworkRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/my-applications': {
-      id: '/_authenticated/my-applications'
-      path: '/my-applications'
-      fullPath: '/my-applications'
-      preLoaderRoute: typeof AuthenticatedMyApplicationsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/messages': {
@@ -429,19 +428,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFeedRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/messages/': {
-      id: '/_authenticated/messages/'
-      path: '/'
-      fullPath: '/messages/'
-      preLoaderRoute: typeof AuthenticatedMessagesIndexRouteImport
-      parentRoute: typeof AuthenticatedMessagesRoute
-    }
     '/_authenticated/jobs/': {
       id: '/_authenticated/jobs/'
       path: '/'
       fullPath: '/jobs/'
       preLoaderRoute: typeof AuthenticatedJobsIndexRouteImport
       parentRoute: typeof AuthenticatedJobsRoute
+    }
+    '/_authenticated/jobs/$id': {
+      id: '/_authenticated/jobs/$id'
+      path: '/$id'
+      fullPath: '/jobs/$id'
+      preLoaderRoute: typeof AuthenticatedJobsIdRouteImport
+      parentRoute: typeof AuthenticatedJobsRoute
+    }
+    '/_authenticated/messages/': {
+      id: '/_authenticated/messages/'
+      path: '/'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof AuthenticatedMessagesIndexRouteImport
+      parentRoute: typeof AuthenticatedMessagesRoute
     }
     '/_authenticated/settings/profile': {
       id: '/_authenticated/settings/profile'
@@ -463,13 +469,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/messages/$conversationId'
       preLoaderRoute: typeof AuthenticatedMessagesConversationIdRouteImport
       parentRoute: typeof AuthenticatedMessagesRoute
-    }
-    '/_authenticated/jobs/$id': {
-      id: '/_authenticated/jobs/$id'
-      path: '/$id'
-      fullPath: '/jobs/$id'
-      preLoaderRoute: typeof AuthenticatedJobsIdRouteImport
-      parentRoute: typeof AuthenticatedJobsRoute
     }
   }
 }
