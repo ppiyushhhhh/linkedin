@@ -12,6 +12,8 @@ const projectSchema = z.object({
   live_url: z.string().trim().url().or(z.literal("")).optional(),
   github_url: z.string().trim().url().or(z.literal("")).optional(),
   image_url: z.string().trim().url().or(z.literal("")).optional(),
+  start_date: z.string().nullable().optional(),
+  end_date: z.string().nullable().optional(),
 });
 
 export const upsertProject = createServerFn({ method: "POST" })
@@ -26,6 +28,8 @@ export const upsertProject = createServerFn({ method: "POST" })
       live_url: data.live_url || null,
       github_url: data.github_url || null,
       image_url: data.image_url || null,
+      start_date: data.start_date || null,
+      end_date: data.end_date || null,
     };
     const { error } = data.id
       ? await context.supabase.from("projects" as any).update(row).eq("id", data.id).eq("profile_id", context.userId)
