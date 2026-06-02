@@ -679,6 +679,39 @@ export type Database = {
           },
         ]
       }
+      resume_drafts: {
+        Row: {
+          created_at: string
+          id: string
+          resume_data: Json
+          summary: string | null
+          template_name: string
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          resume_data?: Json
+          summary?: string | null
+          template_name?: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          resume_data?: Json
+          summary?: string | null
+          template_name?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_jobs: {
         Row: {
           created_at: string

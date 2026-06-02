@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin, Globe, Github, Linkedin, UserPlus, UserCheck, Clock, UserMinus, Plus, Pencil, Trash2, Home, Award, FolderGit2, Briefcase, GraduationCap } from "lucide-react";
+import { MapPin, Globe, Github, Linkedin, UserPlus, UserCheck, Clock, UserMinus, Plus, Pencil, Trash2, Home, Award, FolderGit2, Briefcase, GraduationCap, FileText } from "lucide-react";
 import { MessageButton } from "@/components/app/MessageButton";
 import { toast } from "sonner";
 
@@ -107,7 +107,10 @@ function ProfilePage() {
             {me && (
               <div className="flex flex-wrap gap-2">
                 {isSelf ? (
-                  <Link to="/settings/profile"><Button variant="outline"><Pencil className="mr-1 h-4 w-4" />Edit profile</Button></Link>
+                  <>
+                    <Link to="/settings/profile"><Button variant="outline"><Pencil className="mr-1 h-4 w-4" />Edit profile</Button></Link>
+                    <Link to={"/resume-builder" as any}><Button><FileText className="mr-1 h-4 w-4" />Resume Builder</Button></Link>
+                  </>
                 ) : (
                   <>
                     {status?.status === "accepted" && (

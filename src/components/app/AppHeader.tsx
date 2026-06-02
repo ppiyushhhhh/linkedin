@@ -133,6 +133,9 @@ export function AppHeader() {
             <DropdownMenuItem onClick={() => navigate({ to: "/my-applications" })}>
               <FileText className="mr-2 h-4 w-4" /> My applications
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/resume-builder" })}>
+              <FileText className="mr-2 h-4 w-4" /> Resume Builder
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate({ to: "/saved-jobs" })}>
               <Bookmark className="mr-2 h-4 w-4" /> Saved jobs
             </DropdownMenuItem>
