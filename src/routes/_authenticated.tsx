@@ -4,8 +4,8 @@ import { AppHeader } from "@/components/app/AppHeader";
 import { MobileNav } from "@/components/app/MobileNav";
 
 export const Route = createFileRoute("/_authenticated")({
+  ssr: false,
   beforeLoad: async () => {
-    if (typeof window === "undefined") return;
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) {
       throw redirect({ to: "/login" });
