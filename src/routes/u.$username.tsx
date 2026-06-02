@@ -111,9 +111,6 @@ function ProfilePage() {
                     <Link to="/settings/profile"><Button variant="outline"><Pencil className="mr-1 h-4 w-4" />Edit profile</Button></Link>
                     <Link to={"/resume-builder" as any}><Button><FileText className="mr-1 h-4 w-4" />Resume Builder</Button></Link>
                   </>
-                ) : null}
-                {false && (
-                  <Link to="/settings/profile"><Button variant="outline"><Pencil className="mr-1 h-4 w-4" />Edit profile</Button></Link>
                 ) : (
                   <>
                     {status?.status === "accepted" && (
