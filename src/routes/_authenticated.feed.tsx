@@ -28,7 +28,7 @@ function FeedPage() {
   const { data: me } = useQuery({ queryKey: ["me-profile"], queryFn: () => getMyProfile() });
   const { data: stats } = useQuery({ queryKey: ["me-stats"], queryFn: () => getMyStats() });
   const { data: latestExp } = useQuery({ queryKey: ["me-latest-exp"], queryFn: () => getMyLatestExperience() });
-  const { data: suggestions } = useQuery({ queryKey: ["suggestions"], queryFn: () => getSuggestions() });
+
 
   const feed = useInfiniteQuery({
     queryKey: ["feed"],
