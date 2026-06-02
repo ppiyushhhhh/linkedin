@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import React, { useState } from "react";
 import { getProfileByUsername, getMyProfile, addSkill, deleteSkill, upsertExperience, deleteExperience, upsertEducation, deleteEducation } from "@/lib/profile.functions";
 import { getProfileExtras, upsertProject, deleteProject, upsertCertification, deleteCertification } from "@/lib/profile-extras.functions";
 import {
