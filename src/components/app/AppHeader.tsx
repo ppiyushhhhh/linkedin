@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
-import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare, Bookmark, MessageSquare } from "lucide-react";
+import { Home, Users, Search, User as UserIcon, LogOut, Briefcase, Bookmark, MessageSquare, FileText } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,9 +20,9 @@ import { useEffect, useState } from "react";
 const navItems = [
   { to: "/feed", label: "Home", icon: Home, key: "home" },
   { to: "/network", label: "Network", icon: Users, key: "network" },
+  { to: "/jobs", label: "Jobs", icon: Briefcase, key: "jobs" },
   { to: "/messages", label: "Messages", icon: MessageSquare, key: "messages" },
   { to: "/search", label: "Search", icon: Search, key: "search" },
-  { to: "/feed", label: "Post", icon: PlusSquare, key: "post" },
 ];
 
 export function AppHeader() {
@@ -126,6 +126,15 @@ export function AppHeader() {
                   {msgCount > 9 ? "9+" : msgCount}
                 </span>
               )}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/jobs" })}>
+              <Briefcase className="mr-2 h-4 w-4" /> Jobs
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/my-applications" })}>
+              <FileText className="mr-2 h-4 w-4" /> My applications
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/saved-jobs" })}>
+              <Bookmark className="mr-2 h-4 w-4" /> Saved jobs
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate({ to: "/saved-posts" })}>
               <Bookmark className="mr-2 h-4 w-4" /> Saved posts
