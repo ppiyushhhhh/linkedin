@@ -32,6 +32,8 @@ import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated.f
 import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated.messages.index'
 import { Route as AuthenticatedJobsIndexRouteImport } from './routes/_authenticated.jobs.index'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated.settings.profile'
+import { Route as AuthenticatedSettingsPrivacyRouteImport } from './routes/_authenticated.settings.privacy'
+import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated.settings.account'
 import { Route as AuthenticatedPostIdRouteImport } from './routes/_authenticated.post.$id'
 import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated.messages.$conversationId'
 import { Route as AuthenticatedJobsIdRouteImport } from './routes/_authenticated.jobs.$id'
@@ -157,6 +159,18 @@ const AuthenticatedSettingsProfileRoute =
     path: '/profile',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
+const AuthenticatedSettingsPrivacyRoute =
+  AuthenticatedSettingsPrivacyRouteImport.update({
+    id: '/privacy',
+    path: '/privacy',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSettingsAccountRoute =
+  AuthenticatedSettingsAccountRouteImport.update({
+    id: '/account',
+    path: '/account',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
 const AuthenticatedPostIdRoute = AuthenticatedPostIdRouteImport.update({
   id: '/post/$id',
   path: '/post/$id',
@@ -197,6 +211,8 @@ export interface FileRoutesByFullPath {
   '/jobs/$id': typeof AuthenticatedJobsIdRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
+  '/settings/account': typeof AuthenticatedSettingsAccountRoute
+  '/settings/privacy': typeof AuthenticatedSettingsPrivacyRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/jobs/': typeof AuthenticatedJobsIndexRoute
   '/messages/': typeof AuthenticatedMessagesIndexRoute
@@ -222,6 +238,8 @@ export interface FileRoutesByTo {
   '/jobs/$id': typeof AuthenticatedJobsIdRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/post/$id': typeof AuthenticatedPostIdRoute
+  '/settings/account': typeof AuthenticatedSettingsAccountRoute
+  '/settings/privacy': typeof AuthenticatedSettingsPrivacyRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/jobs': typeof AuthenticatedJobsIndexRoute
   '/messages': typeof AuthenticatedMessagesIndexRoute
@@ -251,6 +269,8 @@ export interface FileRoutesById {
   '/_authenticated/jobs/$id': typeof AuthenticatedJobsIdRoute
   '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_authenticated/post/$id': typeof AuthenticatedPostIdRoute
+  '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
+  '/_authenticated/settings/privacy': typeof AuthenticatedSettingsPrivacyRoute
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/_authenticated/jobs/': typeof AuthenticatedJobsIndexRoute
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
@@ -280,6 +300,8 @@ export interface FileRouteTypes {
     | '/jobs/$id'
     | '/messages/$conversationId'
     | '/post/$id'
+    | '/settings/account'
+    | '/settings/privacy'
     | '/settings/profile'
     | '/jobs/'
     | '/messages/'
@@ -305,6 +327,8 @@ export interface FileRouteTypes {
     | '/jobs/$id'
     | '/messages/$conversationId'
     | '/post/$id'
+    | '/settings/account'
+    | '/settings/privacy'
     | '/settings/profile'
     | '/jobs'
     | '/messages'
@@ -333,6 +357,8 @@ export interface FileRouteTypes {
     | '/_authenticated/jobs/$id'
     | '/_authenticated/messages/$conversationId'
     | '/_authenticated/post/$id'
+    | '/_authenticated/settings/account'
+    | '/_authenticated/settings/privacy'
     | '/_authenticated/settings/profile'
     | '/_authenticated/jobs/'
     | '/_authenticated/messages/'
@@ -510,6 +536,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsProfileRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
+    '/_authenticated/settings/privacy': {
+      id: '/_authenticated/settings/privacy'
+      path: '/privacy'
+      fullPath: '/settings/privacy'
+      preLoaderRoute: typeof AuthenticatedSettingsPrivacyRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/settings/account': {
+      id: '/_authenticated/settings/account'
+      path: '/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof AuthenticatedSettingsAccountRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
     '/_authenticated/post/$id': {
       id: '/_authenticated/post/$id'
       path: '/post/$id'
@@ -564,10 +604,14 @@ const AuthenticatedMessagesRouteWithChildren =
   )
 
 interface AuthenticatedSettingsRouteChildren {
+  AuthenticatedSettingsAccountRoute: typeof AuthenticatedSettingsAccountRoute
+  AuthenticatedSettingsPrivacyRoute: typeof AuthenticatedSettingsPrivacyRoute
   AuthenticatedSettingsProfileRoute: typeof AuthenticatedSettingsProfileRoute
 }
 
 const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
+  AuthenticatedSettingsAccountRoute: AuthenticatedSettingsAccountRoute,
+  AuthenticatedSettingsPrivacyRoute: AuthenticatedSettingsPrivacyRoute,
   AuthenticatedSettingsProfileRoute: AuthenticatedSettingsProfileRoute,
 }
 
@@ -627,3 +671,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
