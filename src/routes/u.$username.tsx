@@ -19,7 +19,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin, Globe, Github, Linkedin, UserPlus, UserCheck, Clock, UserMinus, Plus, Pencil, Trash2, Home, MessageSquare, Award, FolderGit2, Briefcase, GraduationCap } from "lucide-react";
+import { MapPin, Globe, Github, Linkedin, UserPlus, UserCheck, Clock, UserMinus, Plus, Pencil, Trash2, Home, Award, FolderGit2, Briefcase, GraduationCap } from "lucide-react";
+import { MessageButton } from "@/components/app/MessageButton";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/u/$username")({
@@ -126,7 +127,7 @@ function ProfilePage() {
                         {status?.is_following ? "Following" : "Follow"}
                       </Button>
                     )}
-                    <Button variant="outline" onClick={() => toast("Messaging coming soon")}><MessageSquare className="mr-1 h-4 w-4" /> Message</Button>
+                    {status?.status === "accepted" && profileId && <MessageButton otherId={profileId} />}
                     {status?.status === "accepted" && (
                       <Button variant="ghost" size="icon" onClick={() => unconnect.mutate()} title="Remove connection">
                         <UserMinus className="h-4 w-4" />
