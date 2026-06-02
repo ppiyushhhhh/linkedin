@@ -356,13 +356,19 @@ function fmt(d?: string | null) {
   catch { return d; }
 }
 
-function AddBtn({ label }: { label: string }) {
-  return <Button size="sm" variant="ghost"><Plus className="mr-1 h-4 w-4" />{label}</Button>;
-}
+const AddBtn = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button> & { label: string }>(
+  ({ label, ...props }, ref) => (
+    <Button ref={ref} size="sm" variant="ghost" {...props}><Plus className="mr-1 h-4 w-4" />{label}</Button>
+  ),
+);
+AddBtn.displayName = "AddBtn";
 
-function EditIconBtn() {
-  return <Button size="icon" variant="ghost"><Pencil className="h-4 w-4" /></Button>;
-}
+const EditIconBtn = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
+  (props, ref) => (
+    <Button ref={ref} size="icon" variant="ghost" {...props}><Pencil className="h-4 w-4" /></Button>
+  ),
+);
+EditIconBtn.displayName = "EditIconBtn";
 
 // --- Dialogs ---
 
