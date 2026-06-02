@@ -6,6 +6,7 @@ export type NotificationType =
   | "follow"
   | "post_like"
   | "post_comment"
+  | "post_repost"
   | "mention"
   | "comment_reply";
 
