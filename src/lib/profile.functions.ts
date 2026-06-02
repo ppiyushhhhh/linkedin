@@ -117,6 +117,7 @@ const experienceSchema = z.object({
   id: z.string().uuid().optional(),
   title: z.string().trim().min(1).max(120),
   company: z.string().trim().min(1).max(120),
+  employment_type: z.string().trim().max(40).default(""),
   location: z.string().trim().max(120).default(""),
   start_date: z.string().min(1),
   end_date: z.string().nullable().optional(),
