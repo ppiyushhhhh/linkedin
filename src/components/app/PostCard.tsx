@@ -1,9 +1,26 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ThumbsUp, MessageSquare, Trash2, PartyPopper, Heart, Lightbulb, Smile } from "lucide-react";
+import {
+  ThumbsUp,
+  MessageSquare,
+  Trash2,
+  PartyPopper,
+  Heart,
+  Lightbulb,
+  Smile,
+  Repeat2,
+  Bookmark,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "./UserAvatar";
 import {
   addComment,
@@ -16,6 +33,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
 
 const REACTIONS = [
   { type: "like", label: "Like", Icon: ThumbsUp, color: "text-primary" },
@@ -62,11 +80,26 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
           <p className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</p>
         </div>
         {post.author_id === currentUserId && (
-          <Button size="icon" variant="ghost" onClick={() => del.mutate()} aria-label="Delete">
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="icon" variant="ghost" aria-label="Post actions">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onClick={() => del.mutate()}
+              >
+                <Trash2 className="mr-2 h-4 w-4" /> Delete post
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </header>
+
+
+
 
       <div className="whitespace-pre-wrap px-4 py-3 text-sm">{post.content}</div>
       {post.image_url && (
@@ -83,7 +116,7 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
       ) : null}
 
       <div className="border-t px-2 py-1">
-        <div className="relative grid grid-cols-2">
+        <div className="relative grid grid-cols-4">
           <div
             className="relative"
             onMouseEnter={() => setShowPicker(true)}
@@ -95,10 +128,10 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
               onClick={() => react.mutate(currentReaction?.type ?? "like")}
             >
               <MainIcon className="h-4 w-4" />
-              {currentReaction?.label ?? "Like"}
+              <span className="hidden sm:inline">{currentReaction?.label ?? "Like"}</span>
             </Button>
             {showPicker && (
-              <div className="absolute bottom-full left-1/2 mb-1 flex -translate-x-1/2 gap-1 rounded-full border bg-popover p-1 shadow-md">
+              <div className="absolute bottom-full left-1/2 z-10 mb-1 flex -translate-x-1/2 gap-1 rounded-full border bg-popover p-1 shadow-md">
                 {REACTIONS.map(({ type, Icon, label, color }) => (
                   <button
                     key={type}
@@ -116,10 +149,25 @@ export function PostCard({ post, currentUserId }: { post: FeedPost; currentUserI
             )}
           </div>
           <Button variant="ghost" className="justify-center gap-2" onClick={() => setShowComments((s) => !s)}>
-            <MessageSquare className="h-4 w-4" /> Comment
+            <MessageSquare className="h-4 w-4" /> <span className="hidden sm:inline">Comment</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="justify-center gap-2"
+            onClick={() => toast.info("Repost coming soon")}
+          >
+            <Repeat2 className="h-4 w-4" /> <span className="hidden sm:inline">Repost</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="justify-center gap-2"
+            onClick={() => toast.success("Post saved")}
+          >
+            <Bookmark className="h-4 w-4" /> <span className="hidden sm:inline">Save</span>
           </Button>
         </div>
       </div>
+
 
       {showComments && <Comments postId={post.id} currentUserId={currentUserId} />}
     </article>
