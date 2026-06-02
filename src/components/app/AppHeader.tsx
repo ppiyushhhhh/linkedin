@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
 import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { to: "/feed", label: "Home", icon: Home },
@@ -27,7 +27,12 @@ export function AppHeader() {
   const navigate = useNavigate();
   const router = useRouter();
   const qc = useQueryClient();
-  const [q, setQ] = useState("");
+  const urlSearch = useSearch({ strict: false }) as { q?: string };
+  const [q, setQ] = useState(urlSearch?.q ?? "");
+
+  useEffect(() => {
+    setQ(urlSearch?.q ?? "");
+  }, [urlSearch?.q]);
 
   const { data: me } = useQuery({
     queryKey: ["me-profile"],
