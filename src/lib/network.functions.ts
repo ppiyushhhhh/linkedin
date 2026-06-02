@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { createNotification } from "./notifications.server";
 
 const PROFILE_LITE = "id, username, first_name, last_name, headline, avatar_url, location, company";
 
