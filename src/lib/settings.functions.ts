@@ -15,7 +15,7 @@ export const getMyPreferences = createServerFn({ method: "GET" })
       .eq("id", context.userId)
       .single();
     if (error) throw new Error(error.message);
-    return data as {
+    return data as unknown as {
       profile_visibility: "public" | "private";
       show_email: boolean;
       show_location: boolean;
