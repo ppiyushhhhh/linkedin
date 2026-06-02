@@ -30,7 +30,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/notifications")({
-  head: () => ({ meta: [{ title: "Notifications — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "Notifications — LinkedIn" }] }),
   component: NotificationsPage,
 });
 

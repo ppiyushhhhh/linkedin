@@ -62,7 +62,7 @@ import {
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/settings/profile")({
-  head: () => ({ meta: [{ title: "Edit profile — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "Edit profile — LinkedIn" }] }),
   component: EditProfilePage,
 });
 
@@ -118,7 +118,7 @@ function EditProfilePage() {
 
       <h1 className="text-2xl font-bold">Edit profile</h1>
       <p className="text-sm text-muted-foreground">
-        Build a stronger profile. Updates appear instantly across LinkUp World.
+        Build a stronger profile. Updates appear instantly across LinkedIn.
       </p>
 
       <Tabs defaultValue="basic" className="mt-4">

@@ -64,7 +64,7 @@ const searchSchema = z.object({ q: z.string().optional() });
 
 export const Route = createFileRoute("/_authenticated/search")({
   validateSearch: (s) => searchSchema.parse(s),
-  head: () => ({ meta: [{ title: "Search — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "Search — LinkedIn" }] }),
   component: SearchPage,
 });
 
@@ -225,7 +225,7 @@ function SearchPage() {
       </div>
 
       <div className="rounded-2xl border bg-card p-4 shadow-sm">
-        <h1 className="mb-3 text-lg font-semibold sm:text-xl">Search LinkUp World</h1>
+        <h1 className="mb-3 text-lg font-semibold sm:text-xl">Search LinkedIn</h1>
         <form onSubmit={handleSubmit} className="relative">
           <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <Input

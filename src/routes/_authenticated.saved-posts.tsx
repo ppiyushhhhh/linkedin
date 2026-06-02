@@ -9,7 +9,7 @@ import { BackButton } from "@/components/app/BackButton";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/saved-posts")({
-  head: () => ({ meta: [{ title: "Saved posts — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "Saved posts — LinkedIn" }] }),
   component: SavedPostsPage,
 });
 

@@ -26,8 +26,8 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/u/$username")({
   head: ({ params }) => ({
     meta: [
-      { title: `@${params.username} — LinkUp World` },
-      { name: "description", content: `View ${params.username}'s profile on LinkUp World.` },
+      { title: `@${params.username} — LinkedIn` },
+      { name: "description", content: `View ${params.username}'s profile on LinkedIn.` },
     ],
   }),
   component: ProfilePage,

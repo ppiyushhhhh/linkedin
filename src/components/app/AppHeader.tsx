@@ -61,8 +61,8 @@ export function AppHeader() {
     <header className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-3 sm:gap-3 sm:px-4">
         <Link to="/feed" className="flex shrink-0 items-center gap-2 font-bold text-primary">
-          <img src={logo} alt="LinkUp World" className="h-8 w-8 rounded-md object-cover" />
-          <span className="hidden text-sm sm:inline">LinkUp World</span>
+          <img src={logo} alt="LinkedIn" className="h-8 w-8 rounded-md object-cover" />
+          <span className="hidden text-sm sm:inline">LinkedIn</span>
         </Link>
 
         <form

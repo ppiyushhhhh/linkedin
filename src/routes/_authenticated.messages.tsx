@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/messages")({
-  head: () => ({ meta: [{ title: "Messages — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "Messages — LinkedIn" }] }),
   component: MessagesLayout,
 });
 
