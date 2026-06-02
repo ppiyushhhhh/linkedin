@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { toast } from "sonner";
+import { BackButton } from "@/components/app/BackButton";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({ meta: [{ title: "Settings — LinkUp World" }] }),

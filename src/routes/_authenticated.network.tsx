@@ -11,6 +11,7 @@ import { UserAvatar } from "@/components/app/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, X, UserPlus, UserMinus } from "lucide-react";
+import { BackButton } from "@/components/app/BackButton";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/network")({
