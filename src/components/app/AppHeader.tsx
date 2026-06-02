@@ -1,10 +1,11 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { Home, Users, Search, Bell, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
+import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyProfile } from "@/lib/profile.functions";
 import { UserAvatar } from "./UserAvatar";
+import { NotificationBell } from "./NotificationBell";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +20,6 @@ const navItems = [
   { to: "/feed", label: "Home", icon: Home },
   { to: "/network", label: "Network", icon: Users },
   { to: "/feed", label: "Post", icon: PlusSquare },
-  { to: "/notifications", label: "Alerts", icon: Bell },
   { to: "/search", label: "Search", icon: Search },
 ];
 
