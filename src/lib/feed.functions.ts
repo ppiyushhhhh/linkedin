@@ -57,7 +57,7 @@ export const REACTION_TYPES = [
 
 async function enrichPosts(
   rawPosts: any[],
-  userId: string | null,
+  userId: string,
 ): Promise<FeedPost[]> {
   if (rawPosts.length === 0) return [];
   const ids = rawPosts.map((p) => p.id);
