@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Trash2, Check, UserPlus, UserCheck, Heart, MessageSquare, AtSign } from "lucide-react";
+import { MoreHorizontal, Trash2, Check, UserPlus, UserCheck, Heart, MessageSquare, AtSign, Repeat2 } from "lucide-react";
 import type { NotificationRow } from "@/lib/notifications.functions";
 import { cn } from "@/lib/utils";
 
