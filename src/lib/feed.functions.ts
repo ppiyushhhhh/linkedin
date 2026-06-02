@@ -114,6 +114,17 @@ export const toggleReaction = createServerFn({ method: "POST" })
     if (!existing) {
       const { error } = await supabase.from("reactions").insert({ post_id: data.post_id, user_id: userId, type: data.type });
       if (error) throw new Error(error.message);
+      const { data: post } = await supabaseAdmin.from("posts").select("author_id").eq("id", data.post_id).maybeSingle();
+      if (post?.author_id) {
+        await createNotification({
+          recipient_id: post.author_id,
+          actor_id: userId,
+          type: "post_like",
+          entity_type: "post",
+          entity_id: data.post_id,
+          dedupe: true,
+        });
+      }
       return { reaction: data.type };
     }
     if (existing.type === data.type) {
