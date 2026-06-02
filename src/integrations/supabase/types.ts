@@ -544,10 +544,13 @@ export type Database = {
       profiles: {
         Row: {
           about: string
+          allow_connection_requests: boolean
+          allow_messages: boolean
           avatar_url: string | null
           company: string
           cover_url: string | null
           created_at: string
+          email_notifications: boolean
           first_name: string
           github_url: string | null
           headline: string
@@ -556,16 +559,23 @@ export type Database = {
           linkedin_url: string | null
           location: string
           portfolio_url: string | null
+          profile_visibility: string
+          push_notifications: boolean
+          show_email: boolean
+          show_location: boolean
           updated_at: string
           username: string
           website: string | null
         }
         Insert: {
           about?: string
+          allow_connection_requests?: boolean
+          allow_messages?: boolean
           avatar_url?: string | null
           company?: string
           cover_url?: string | null
           created_at?: string
+          email_notifications?: boolean
           first_name?: string
           github_url?: string | null
           headline?: string
@@ -574,16 +584,23 @@ export type Database = {
           linkedin_url?: string | null
           location?: string
           portfolio_url?: string | null
+          profile_visibility?: string
+          push_notifications?: boolean
+          show_email?: boolean
+          show_location?: boolean
           updated_at?: string
           username: string
           website?: string | null
         }
         Update: {
           about?: string
+          allow_connection_requests?: boolean
+          allow_messages?: boolean
           avatar_url?: string | null
           company?: string
           cover_url?: string | null
           created_at?: string
+          email_notifications?: boolean
           first_name?: string
           github_url?: string | null
           headline?: string
@@ -592,6 +609,10 @@ export type Database = {
           linkedin_url?: string | null
           location?: string
           portfolio_url?: string | null
+          profile_visibility?: string
+          push_notifications?: boolean
+          show_email?: boolean
+          show_location?: boolean
           updated_at?: string
           username?: string
           website?: string | null
