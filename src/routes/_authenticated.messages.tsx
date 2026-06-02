@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useMatch, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useMatch } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { listConversations } from "@/lib/messages.functions";
