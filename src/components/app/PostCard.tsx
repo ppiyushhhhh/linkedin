@@ -1,9 +1,26 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ThumbsUp, MessageSquare, Trash2, PartyPopper, Heart, Lightbulb, Smile } from "lucide-react";
+import {
+  ThumbsUp,
+  MessageSquare,
+  Trash2,
+  PartyPopper,
+  Heart,
+  Lightbulb,
+  Smile,
+  Repeat2,
+  Bookmark,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "./UserAvatar";
 import {
   addComment,
@@ -16,6 +33,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
 
 const REACTIONS = [
   { type: "like", label: "Like", Icon: ThumbsUp, color: "text-primary" },
