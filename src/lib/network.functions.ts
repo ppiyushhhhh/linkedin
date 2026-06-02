@@ -190,3 +190,123 @@ export const searchPeople = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return rows ?? [];
   });
+
+export type PeopleYouMayKnowItem = {
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  headline: string | null;
+  avatar_url: string | null;
+  location: string | null;
+  company: string | null;
+  skills: string[];
+  mutual_count: number;
+  i_follow: boolean;
+  connection_status: "none" | "pending_in";
+  score: number;
+};
+
+export const getPeopleYouMayKnow = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ limit: z.number().int().min(1).max(50).optional() }).parse(d ?? {}))
+  .handler(async ({ data, context }): Promise<PeopleYouMayKnowItem[]> => {
+    const { userId } = context;
+    const limit = data.limit ?? 12;
+
+    const [{ data: me }, { data: conns }, { data: follows }, { data: mySkillsRows }] = await Promise.all([
+      supabaseAdmin.from("profiles").select("location, company").eq("id", userId).maybeSingle(),
+      supabaseAdmin
+        .from("connections")
+        .select("requester_id, addressee_id, status")
+        .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`),
+      supabaseAdmin.from("follows").select("following_id").eq("follower_id", userId),
+      supabaseAdmin.from("skills").select("name").eq("profile_id", userId),
+    ]);
+
+    const exclude = new Set<string>([userId]);
+    const myAcceptedConnIds = new Set<string>();
+    const incomingPendingIds = new Set<string>();
+    for (const c of (conns ?? []) as any[]) {
+      const other = c.requester_id === userId ? c.addressee_id : c.requester_id;
+      if (c.status === "accepted") { exclude.add(other); myAcceptedConnIds.add(other); }
+      else if (c.status === "pending" && c.requester_id === userId) exclude.add(other);
+      else if (c.status === "pending" && c.addressee_id === userId) incomingPendingIds.add(other);
+    }
+    const followingIds = new Set<string>(((follows ?? []) as any[]).map((f) => f.following_id));
+    const mySkills = new Set<string>(((mySkillsRows ?? []) as any[]).map((s) => (s.name as string).toLowerCase()));
+
+    const excludeList = Array.from(exclude).map((id) => `"${id}"`).join(",");
+    const { data: candidates } = await supabaseAdmin
+      .from("profiles")
+      .select(PROFILE_LITE)
+      .not("id", "in", `(${excludeList})`)
+      .order("created_at", { ascending: false })
+      .limit(60);
+
+    const list = (candidates ?? []) as any[];
+    if (list.length === 0) return [];
+    const ids = list.map((p) => p.id);
+
+    const [{ data: skillsRows }, { data: candConns }] = await Promise.all([
+      supabaseAdmin.from("skills").select("profile_id, name").in("profile_id", ids),
+      myAcceptedConnIds.size > 0
+        ? supabaseAdmin
+            .from("connections")
+            .select("requester_id, addressee_id")
+            .eq("status", "accepted")
+            .or(
+              `requester_id.in.(${ids.join(",")}),addressee_id.in.(${ids.join(",")})`,
+            )
+        : Promise.resolve({ data: [] as any[] }),
+    ]);
+
+    const skillsByUser = new Map<string, string[]>();
+    for (const s of (skillsRows ?? []) as any[]) {
+      const arr = skillsByUser.get(s.profile_id) ?? [];
+      arr.push(s.name);
+      skillsByUser.set(s.profile_id, arr);
+    }
+
+    const idSet = new Set(ids);
+    const mutualByUser = new Map<string, number>();
+    for (const c of (candConns ?? []) as any[]) {
+      const a = c.requester_id, b = c.addressee_id;
+      const cand = idSet.has(a) ? a : b;
+      const other = cand === a ? b : a;
+      if (myAcceptedConnIds.has(other)) mutualByUser.set(cand, (mutualByUser.get(cand) ?? 0) + 1);
+    }
+
+    const myCompany = (me?.company ?? "").trim().toLowerCase();
+    const myLocation = (me?.location ?? "").trim().toLowerCase();
+
+    const enriched: PeopleYouMayKnowItem[] = list.map((p) => {
+      const skills = skillsByUser.get(p.id) ?? [];
+      const skillOverlap = mySkills.size
+        ? skills.filter((s) => mySkills.has(s.toLowerCase())).length
+        : 0;
+      const mutual = mutualByUser.get(p.id) ?? 0;
+      const sameCompany = myCompany && (p.company ?? "").toLowerCase() === myCompany ? 1 : 0;
+      const sameLocation = myLocation && (p.location ?? "").toLowerCase() === myLocation ? 1 : 0;
+      const score = mutual * 5 + skillOverlap * 3 + sameCompany * 4 + sameLocation * 2;
+      return {
+        id: p.id,
+        username: p.username,
+        first_name: p.first_name,
+        last_name: p.last_name,
+        headline: p.headline,
+        avatar_url: p.avatar_url,
+        location: p.location,
+        company: p.company,
+        skills,
+        mutual_count: mutual,
+        i_follow: followingIds.has(p.id),
+        connection_status: incomingPendingIds.has(p.id) ? "pending_in" : "none",
+        score,
+      };
+    });
+
+    enriched.sort((a, b) => b.score - a.score);
+    return enriched.slice(0, limit);
+  });
+
