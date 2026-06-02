@@ -121,7 +121,7 @@ function ProfilePage() {
                     {status?.status === "pending_in" && (
                       <Button onClick={() => accept.mutate()} disabled={accept.isPending}><UserCheck className="mr-1 h-4 w-4" /> Accept</Button>
                     )}
-                    {status?.status !== "self" && (
+                    {(status?.status as string) !== "self" && (
                       <Button variant={status?.is_following ? "outline" : "secondary"} onClick={() => follow.mutate(!status?.is_following)}>
                         {status?.is_following ? "Following" : "Follow"}
                       </Button>
