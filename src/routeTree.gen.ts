@@ -361,22 +361,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedMessagesRouteChildren {
-  AuthenticatedMessagesConversationIdRoute: typeof AuthenticatedMessagesConversationIdRoute
-  AuthenticatedMessagesIndexRoute: typeof AuthenticatedMessagesIndexRoute
-}
-
-const AuthenticatedMessagesRouteChildren: AuthenticatedMessagesRouteChildren = {
-  AuthenticatedMessagesConversationIdRoute:
-    AuthenticatedMessagesConversationIdRoute,
-  AuthenticatedMessagesIndexRoute: AuthenticatedMessagesIndexRoute,
-}
-
-const AuthenticatedMessagesRouteWithChildren =
-  AuthenticatedMessagesRoute._addFileChildren(
-    AuthenticatedMessagesRouteChildren,
-  )
-
 interface AuthenticatedSettingsRouteChildren {
   AuthenticatedSettingsProfileRoute: typeof AuthenticatedSettingsProfileRoute
 }
@@ -388,6 +372,22 @@ const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
 const AuthenticatedSettingsRouteWithChildren =
   AuthenticatedSettingsRoute._addFileChildren(
     AuthenticatedSettingsRouteChildren,
+  )
+
+interface AuthenticatedMessagesRouteChildren {
+  AuthenticatedMessagesIndexRoute: typeof AuthenticatedMessagesIndexRoute
+  AuthenticatedMessagesConversationIdRoute: typeof AuthenticatedMessagesConversationIdRoute
+}
+
+const AuthenticatedMessagesRouteChildren: AuthenticatedMessagesRouteChildren = {
+  AuthenticatedMessagesIndexRoute: AuthenticatedMessagesIndexRoute,
+  AuthenticatedMessagesConversationIdRoute:
+    AuthenticatedMessagesConversationIdRoute,
+}
+
+const AuthenticatedMessagesRouteWithChildren =
+  AuthenticatedMessagesRoute._addFileChildren(
+    AuthenticatedMessagesRouteChildren,
   )
 
 interface AuthenticatedRouteChildren {
@@ -427,13 +427,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
