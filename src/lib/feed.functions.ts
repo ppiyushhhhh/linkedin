@@ -159,8 +159,29 @@ export const addComment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ post_id: z.string().uuid(), content: z.string().trim().min(1).max(1000) }).parse(d))
   .handler(async ({ data, context }) => {
-    const { error } = await context.supabase.from("comments").insert({ post_id: data.post_id, author_id: context.userId, content: data.content });
+    const { data: row, error } = await context.supabase
+      .from("comments")
+      .insert({ post_id: data.post_id, author_id: context.userId, content: data.content })
+      .select("id")
+      .single();
     if (error) throw new Error(error.message);
+    const { data: post } = await supabaseAdmin.from("posts").select("author_id").eq("id", data.post_id).maybeSingle();
+    if (post?.author_id) {
+      await createNotification({
+        recipient_id: post.author_id,
+        actor_id: context.userId,
+        type: "post_comment",
+        entity_type: "post",
+        entity_id: data.post_id,
+      });
+    }
+    await notifyMentions({
+      text: data.content,
+      actor_id: context.userId,
+      entity_type: "comment",
+      entity_id: row.id,
+      exclude: post?.author_id ? [post.author_id] : [],
+    });
     return { ok: true };
   });
 
