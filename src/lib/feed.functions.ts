@@ -488,7 +488,7 @@ export const getSavedPosts = createServerFn({ method: "GET" })
       .in("id", postIds);
     const enriched = await enrichPosts(postRows ?? [], userId);
     const savedAt = new Map<string, string>();
-    for (const r of rows ?? []) savedAt.set(r.post_id, r.created_at);
+    for (const r of (rows ?? []) as any[]) savedAt.set(r.post_id, r.created_at);
     return enriched
       .map((p) => ({ ...p, saved_at: savedAt.get(p.id) ?? p.created_at }))
       .sort(
