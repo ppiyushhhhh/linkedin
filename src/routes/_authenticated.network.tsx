@@ -14,7 +14,7 @@ import { Check, X, UserPlus, UserMinus } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/network")({
-  head: () => ({ meta: [{ title: "My Network — ConnectSphere" }] }),
+  head: () => ({ meta: [{ title: "My Network — LinkUp World" }] }),
   component: NetworkPage,
 });
 
@@ -42,6 +42,7 @@ function NetworkPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
+      <BackButton />
       <h1 className="text-2xl font-semibold">My Network</h1>
       <Tabs defaultValue="invitations" className="mt-4">
         <TabsList>

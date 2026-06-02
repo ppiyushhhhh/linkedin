@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import logo from "@/assets/logo.jpg";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "Sign in — Linkden" }] }),
+  head: () => ({ meta: [{ title: "Sign in — LinkUp World" }] }),
   component: LoginPage,
 });
 
@@ -35,7 +35,7 @@ function LoginPage() {
   };
 
   return (
-    <AuthShell title="Sign in to Linkden" subtitle="Stay updated on your professional world.">
+    <AuthShell title="Sign in to LinkUp World" subtitle="Stay updated on your professional world.">
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="space-y-1.5">
           <Label htmlFor="email">Email</Label>
@@ -55,7 +55,7 @@ function LoginPage() {
         Continue with Google
       </Button>
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        New to Linkden?{" "}
+        New to LinkUp World?{" "}
         <Link to="/signup" className="font-semibold text-primary hover:underline">Join now</Link>
       </p>
     </AuthShell>
@@ -68,8 +68,8 @@ export function AuthShell({ title, subtitle, children }: { title: string; subtit
       <header className="border-b bg-card">
         <div className="mx-auto flex h-14 max-w-6xl items-center px-4">
           <Link to="/" className="flex items-center gap-2 font-bold text-primary">
-            <img src={logo} alt="Linkden" className="h-8 w-8 rounded-md object-cover" />
-            Linkden
+            <img src={logo} alt="LinkUp World" className="h-8 w-8 rounded-md object-cover" />
+            LinkUp World
           </Link>
         </div>
       </header>

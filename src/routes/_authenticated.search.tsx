@@ -8,7 +8,7 @@ const searchSchema = z.object({ q: z.string().optional() });
 
 export const Route = createFileRoute("/_authenticated/search")({
   validateSearch: (s) => searchSchema.parse(s),
-  head: () => ({ meta: [{ title: "Search — ConnectSphere" }] }),
+  head: () => ({ meta: [{ title: "Search — LinkUp World" }] }),
   component: SearchPage,
 });
 
