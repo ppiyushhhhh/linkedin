@@ -82,10 +82,12 @@ export function AppHeader() {
           ))}
         </nav>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="ml-auto outline-none md:ml-1">
-            <UserAvatar url={me?.avatar_url} name={fullName} className="h-8 w-8" />
-          </DropdownMenuTrigger>
+        <div className="ml-auto flex items-center gap-1 md:ml-1">
+          <NotificationBell />
+          <DropdownMenu>
+            <DropdownMenuTrigger className="outline-none">
+              <UserAvatar url={me?.avatar_url} name={fullName} className="h-8 w-8" />
+            </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <div className="px-2 py-1.5">
               <p className="text-sm font-semibold">{fullName}</p>
