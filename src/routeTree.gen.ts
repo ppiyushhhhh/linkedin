@@ -18,11 +18,11 @@ import { Route as UUsernameRouteImport } from './routes/u.$username'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated.settings'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated.search'
 import { Route as AuthenticatedSavedPostsRouteImport } from './routes/_authenticated.saved-posts'
-import { Route as AuthenticatedPostIdRouteImport } from './routes/_authenticated.post.$id'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedNetworkRouteImport } from './routes/_authenticated.network'
 import { Route as AuthenticatedFeedRouteImport } from './routes/_authenticated.feed'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated.settings.profile'
+import { Route as AuthenticatedPostIdRouteImport } from './routes/_authenticated.post.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -68,11 +68,6 @@ const AuthenticatedSavedPostsRoute = AuthenticatedSavedPostsRouteImport.update({
   path: '/saved-posts',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedPostIdRoute = AuthenticatedPostIdRouteImport.update({
-  id: '/post/$id',
-  path: '/post/$id',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedNotificationsRoute =
   AuthenticatedNotificationsRouteImport.update({
     id: '/notifications',
@@ -95,6 +90,11 @@ const AuthenticatedSettingsProfileRoute =
     path: '/profile',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
+const AuthenticatedPostIdRoute = AuthenticatedPostIdRouteImport.update({
+  id: '/post/$id',
+  path: '/post/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,11 +104,11 @@ export interface FileRoutesByFullPath {
   '/feed': typeof AuthenticatedFeedRoute
   '/network': typeof AuthenticatedNetworkRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
-  '/post/$id': typeof AuthenticatedPostIdRoute
   '/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
 }
 export interface FileRoutesByTo {
@@ -119,11 +119,11 @@ export interface FileRoutesByTo {
   '/feed': typeof AuthenticatedFeedRoute
   '/network': typeof AuthenticatedNetworkRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
-  '/post/$id': typeof AuthenticatedPostIdRoute
   '/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/post/$id': typeof AuthenticatedPostIdRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
 }
 export interface FileRoutesById {
@@ -136,11 +136,11 @@ export interface FileRoutesById {
   '/_authenticated/feed': typeof AuthenticatedFeedRoute
   '/_authenticated/network': typeof AuthenticatedNetworkRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
-  '/_authenticated/post/$id': typeof AuthenticatedPostIdRoute
   '/_authenticated/saved-posts': typeof AuthenticatedSavedPostsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/u/$username': typeof UUsernameRoute
+  '/_authenticated/post/$id': typeof AuthenticatedPostIdRoute
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
 }
 export interface FileRouteTypes {
@@ -153,11 +153,11 @@ export interface FileRouteTypes {
     | '/feed'
     | '/network'
     | '/notifications'
-    | '/post/$id'
     | '/saved-posts'
     | '/search'
     | '/settings'
     | '/u/$username'
+    | '/post/$id'
     | '/settings/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -168,11 +168,11 @@ export interface FileRouteTypes {
     | '/feed'
     | '/network'
     | '/notifications'
-    | '/post/$id'
     | '/saved-posts'
     | '/search'
     | '/settings'
     | '/u/$username'
+    | '/post/$id'
     | '/settings/profile'
   id:
     | '__root__'
@@ -184,11 +184,11 @@ export interface FileRouteTypes {
     | '/_authenticated/feed'
     | '/_authenticated/network'
     | '/_authenticated/notifications'
-    | '/_authenticated/post/$id'
     | '/_authenticated/saved-posts'
     | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/u/$username'
+    | '/_authenticated/post/$id'
     | '/_authenticated/settings/profile'
   fileRoutesById: FileRoutesById
 }
@@ -266,13 +266,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSavedPostsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/post/$id': {
-      id: '/_authenticated/post/$id'
-      path: '/post/$id'
-      fullPath: '/post/$id'
-      preLoaderRoute: typeof AuthenticatedPostIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/notifications': {
       id: '/_authenticated/notifications'
       path: '/notifications'
@@ -301,6 +294,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsProfileRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
+    '/_authenticated/post/$id': {
+      id: '/_authenticated/post/$id'
+      path: '/post/$id'
+      fullPath: '/post/$id'
+      preLoaderRoute: typeof AuthenticatedPostIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -321,20 +321,20 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFeedRoute: typeof AuthenticatedFeedRoute
   AuthenticatedNetworkRoute: typeof AuthenticatedNetworkRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
-  AuthenticatedPostIdRoute: typeof AuthenticatedPostIdRoute
   AuthenticatedSavedPostsRoute: typeof AuthenticatedSavedPostsRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRouteWithChildren
+  AuthenticatedPostIdRoute: typeof AuthenticatedPostIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFeedRoute: AuthenticatedFeedRoute,
   AuthenticatedNetworkRoute: AuthenticatedNetworkRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
-  AuthenticatedPostIdRoute: AuthenticatedPostIdRoute,
   AuthenticatedSavedPostsRoute: AuthenticatedSavedPostsRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRouteWithChildren,
+  AuthenticatedPostIdRoute: AuthenticatedPostIdRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

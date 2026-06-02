@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
-import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
+import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare, Bookmark } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
