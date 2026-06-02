@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/app/AppHeader";
+import { MobileNav } from "@/components/app/MobileNav";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async () => {
@@ -15,9 +16,10 @@ export const Route = createFileRoute("/_authenticated")({
 
 function AuthenticatedLayout() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 md:pb-0">
       <AppHeader />
       <Outlet />
+      <MobileNav />
     </div>
   );
 }
