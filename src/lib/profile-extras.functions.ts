@@ -53,6 +53,8 @@ const certSchema = z.object({
   name: z.string().trim().min(1).max(160),
   issuer: z.string().trim().max(160).default(""),
   issue_date: z.string().nullable().optional(),
+  expiry_date: z.string().nullable().optional(),
+  credential_id: z.string().trim().max(120).nullable().optional(),
   credential_url: z.string().trim().url().or(z.literal("")).optional(),
 });
 
@@ -65,6 +67,8 @@ export const upsertCertification = createServerFn({ method: "POST" })
       name: data.name,
       issuer: data.issuer,
       issue_date: data.issue_date || null,
+      expiry_date: data.expiry_date || null,
+      credential_id: data.credential_id || null,
       credential_url: data.credential_url || null,
     };
     const { error } = data.id
