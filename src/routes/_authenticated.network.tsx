@@ -44,7 +44,7 @@ import { MessageButton } from "@/components/app/MessageButton";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/network")({
-  head: () => ({ meta: [{ title: "My Network — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "My Network — LinkedIn" }] }),
   component: NetworkPage,
 });
 

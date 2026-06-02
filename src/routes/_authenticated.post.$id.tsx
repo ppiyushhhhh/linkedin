@@ -10,7 +10,7 @@ import { BackButton } from "@/components/app/BackButton";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/post/$id")({
-  head: () => ({ meta: [{ title: "Post — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "Post — LinkedIn" }] }),
   component: PostDetailPage,
 });
 

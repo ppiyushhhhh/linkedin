@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/feed")({
-  head: () => ({ meta: [{ title: "Feed — LinkUp World" }] }),
+  head: () => ({ meta: [{ title: "Feed — LinkedIn" }] }),
   component: FeedPage,
 });
 
@@ -105,7 +105,7 @@ function FeedPage() {
         <SuggestionsCard suggestions={suggestions ?? []} />
         <TrendingCard />
         <footer className="px-2 text-xs text-muted-foreground">
-          <p>LinkUp World © {new Date().getFullYear()}</p>
+          <p>LinkedIn © {new Date().getFullYear()}</p>
         </footer>
       </aside>
     </div>
