@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Trash2, Check, UserPlus, UserCheck, Heart, MessageSquare, AtSign } from "lucide-react";
+import { MoreHorizontal, Trash2, Check, UserPlus, UserCheck, Heart, MessageSquare, AtSign, Repeat2 } from "lucide-react";
 import type { NotificationRow } from "@/lib/notifications.functions";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +34,7 @@ export function notificationText(n: NotificationRow) {
     case "follow": return `${name} started following you`;
     case "post_like": return `${name} liked your post`;
     case "post_comment": return `${name} commented on your post`;
+    case "post_repost": return `${name} reposted your post`;
     case "comment_reply": return `${name} replied to your comment`;
     case "mention": return `${name} mentioned you in a ${n.entity_type ?? "post"}`;
     default: return n.message ?? `${name} sent you a notification`;
@@ -51,8 +52,12 @@ export function notificationHref(n: NotificationRow): { to: any; params?: any } 
         : { to: "/network" };
     case "post_like":
     case "post_comment":
+    case "post_repost":
     case "comment_reply":
     case "mention":
+      if (n.entity_type === "post" && n.entity_id) {
+        return { to: "/post/$id", params: { id: n.entity_id } };
+      }
       return n.actor?.username
         ? { to: "/u/$username", params: { username: n.actor.username } }
         : { to: "/feed" };
@@ -68,6 +73,7 @@ function iconFor(type: string) {
     case "connection_accepted": return <UserCheck className={cls} />;
     case "follow": return <UserPlus className={cls} />;
     case "post_like": return <Heart className={cls} />;
+    case "post_repost": return <Repeat2 className={cls} />;
     case "post_comment":
     case "comment_reply": return <MessageSquare className={cls} />;
     case "mention": return <AtSign className={cls} />;

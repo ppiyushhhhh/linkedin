@@ -314,6 +314,7 @@ export type Database = {
           created_at: string
           id: string
           image_url: string | null
+          repost_of_id: string | null
           updated_at: string
         }
         Insert: {
@@ -322,6 +323,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          repost_of_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -330,6 +332,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          repost_of_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -479,6 +482,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      saved_posts: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       skills: {
         Row: {

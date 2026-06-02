@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
-import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare } from "lucide-react";
+import { Home, Users, Search, User as UserIcon, LogOut, PlusSquare, Bookmark } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -104,6 +104,9 @@ export function AppHeader() {
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate({ to: "/feed" })}>
               <Home className="mr-2 h-4 w-4" /> Home
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate({ to: "/saved-posts" })}>
+              <Bookmark className="mr-2 h-4 w-4" /> Saved posts
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigate({ to: "/settings" })}>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
