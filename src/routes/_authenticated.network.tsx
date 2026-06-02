@@ -41,7 +41,9 @@ import {
 } from "lucide-react";
 import { BackButton } from "@/components/app/BackButton";
 import { MessageButton } from "@/components/app/MessageButton";
+import { PeopleYouMayKnow } from "@/components/app/PeopleYouMayKnow";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/_authenticated/network")({
   head: () => ({ meta: [{ title: "My Network — LinkedIn" }] }),
@@ -152,6 +154,15 @@ function NetworkPage() {
         <SummaryCard icon={<UserCheck className="h-4 w-4" />} label="Followers" value={followers.length} loading={loading} />
         <SummaryCard icon={<UserPlus className="h-4 w-4" />} label="Following" value={following.length} loading={loading} />
       </div>
+
+      {/* People You May Know - featured */}
+      <section className="mt-5">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-semibold">People you may know</h2>
+        </div>
+        <PeopleYouMayKnow variant="grid" limit={12} />
+      </section>
+
 
       {/* Search */}
       <div className="relative mt-4">

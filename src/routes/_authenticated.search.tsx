@@ -46,6 +46,8 @@ import {
 } from "@/components/ui/sheet";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { BackButton } from "@/components/app/BackButton";
+import { PeopleYouMayKnow } from "@/components/app/PeopleYouMayKnow";
+
 import {
   searchAll,
   type SearchPerson,
@@ -283,10 +285,14 @@ function SearchPage() {
       </div>
 
       {!debounced && (
-        <div className="mt-6 rounded-2xl border bg-card p-8 text-center text-sm text-muted-foreground">
-          Start typing to search across people, posts, skills, companies and locations.
+        <div className="mt-6 space-y-4">
+          <div>
+            <h2 className="mb-3 text-base font-semibold">Suggested people</h2>
+            <PeopleYouMayKnow variant="grid" limit={9} />
+          </div>
         </div>
       )}
+
 
       {debounced && (
         <Tabs value={tab} onValueChange={setTab} className="mt-4">

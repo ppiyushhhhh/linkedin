@@ -1,15 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MapPin, Briefcase, UserPlus, TrendingUp, Loader2 } from "lucide-react";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { MapPin, Briefcase, TrendingUp, Loader2 } from "lucide-react";
 import { getFeed } from "@/lib/feed.functions";
 import { getMyProfile, getMyStats, getMyLatestExperience } from "@/lib/profile.functions";
-import { getSuggestions, sendConnectionRequest } from "@/lib/network.functions";
 import { PostComposer } from "@/components/app/PostComposer";
 import { PostCard } from "@/components/app/PostCard";
 import { PostSkeleton } from "@/components/app/PostSkeleton";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { PeopleYouMayKnow, PeopleYouMayKnowStrip } from "@/components/app/PeopleYouMayKnow";
+
 
 export const Route = createFileRoute("/_authenticated/feed")({
   head: () => ({ meta: [{ title: "Feed — LinkedIn" }] }),
@@ -28,7 +28,7 @@ function FeedPage() {
   const { data: me } = useQuery({ queryKey: ["me-profile"], queryFn: () => getMyProfile() });
   const { data: stats } = useQuery({ queryKey: ["me-stats"], queryFn: () => getMyStats() });
   const { data: latestExp } = useQuery({ queryKey: ["me-latest-exp"], queryFn: () => getMyLatestExperience() });
-  const { data: suggestions } = useQuery({ queryKey: ["suggestions"], queryFn: () => getSuggestions() });
+
 
   const feed = useInfiniteQuery({
     queryKey: ["feed"],
@@ -65,19 +65,23 @@ function FeedPage() {
         )}
 
         {!feed.isLoading && posts.length === 0 && (
-          <div className="rounded-xl border bg-card p-10 text-center">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-              <TrendingUp className="h-6 w-6 text-muted-foreground" />
+          <>
+            <div className="rounded-xl border bg-card p-10 text-center">
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                <TrendingUp className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <p className="font-semibold">Your feed is empty</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Connect with people or create your first post to get started.
+              </p>
+              <Link to="/network" className="mt-4 inline-block">
+                <Button size="sm">Find people to connect with</Button>
+              </Link>
             </div>
-            <p className="font-semibold">Your feed is empty</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Connect with people or create your first post to get started.
-            </p>
-            <Link to="/network" className="mt-4 inline-block">
-              <Button size="sm">Find people to connect with</Button>
-            </Link>
-          </div>
+            <PeopleYouMayKnowStrip limit={6} />
+          </>
         )}
+
 
         {me && posts.map((p) => <PostCard key={p.id} post={p} currentUserId={me.id} />)}
 
@@ -102,7 +106,7 @@ function FeedPage() {
 
       {/* Right sidebar */}
       <aside className="hidden lg:block space-y-4">
-        <SuggestionsCard suggestions={suggestions ?? []} />
+        <PeopleYouMayKnow variant="sidebar" limit={5} showSeeAll />
         <TrendingCard />
         <footer className="px-2 text-xs text-muted-foreground">
           <p>LinkedIn © {new Date().getFullYear()}</p>
@@ -192,60 +196,6 @@ function ProfileCard({
   );
 }
 
-function SuggestionsCard({ suggestions }: { suggestions: any[] }) {
-  const qc = useQueryClient();
-  const connect = useMutation({
-    mutationFn: (id: string) => sendConnectionRequest({ data: { addressee_id: id } }),
-    onSuccess: () => {
-      toast.success("Connection request sent");
-      qc.invalidateQueries({ queryKey: ["suggestions"] });
-    },
-    onError: (e: any) => toast.error(e.message || "Could not send request"),
-  });
-
-  return (
-    <div className="rounded-xl border bg-card p-4 shadow-sm">
-      <h3 className="text-sm font-semibold">People you may know</h3>
-      <ul className="mt-3 space-y-3">
-        {suggestions.slice(0, 5).map((p: any) => {
-          const n = `${p.first_name} ${p.last_name}`.trim() || p.username;
-          return (
-            <li key={p.id} className="flex items-start gap-2">
-              <Link to="/u/$username" params={{ username: p.username }}>
-                <UserAvatar url={p.avatar_url} name={n} className="h-10 w-10" />
-              </Link>
-              <div className="min-w-0 flex-1">
-                <Link
-                  to="/u/$username"
-                  params={{ username: p.username }}
-                  className="block truncate text-sm font-semibold hover:underline"
-                >
-                  {n}
-                </Link>
-                <p className="line-clamp-2 text-xs text-muted-foreground">{p.headline}</p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="mt-1.5 h-7 rounded-full px-3 text-xs"
-                  disabled={connect.isPending && connect.variables === p.id}
-                  onClick={() => connect.mutate(p.id)}
-                >
-                  <UserPlus className="mr-1 h-3 w-3" /> Connect
-                </Button>
-              </div>
-            </li>
-          );
-        })}
-        {suggestions.length === 0 && (
-          <p className="text-xs text-muted-foreground">No suggestions yet.</p>
-        )}
-      </ul>
-      <Link to="/network" className="mt-3 block text-center text-xs text-primary hover:underline">
-        See all
-      </Link>
-    </div>
-  );
-}
 
 function TrendingCard() {
   return (
