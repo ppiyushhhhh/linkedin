@@ -88,8 +88,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "LinkedIn" },
       { name: "twitter:description", content: "LinkedIn is a professional networking platform for building connections and growing your career." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0de80f87-9d87-434d-ad16-2e7492b3b379/id-preview-fe6e1808--09c3e9fe-d608-4cba-a1e9-d3a3b5d47294.lovable.app-1780166225927.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0de80f87-9d87-434d-ad16-2e7492b3b379/id-preview-fe6e1808--09c3e9fe-d608-4cba-a1e9-d3a3b5d47294.lovable.app-1780166225927.png" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/4618c2cc-0ac7-4339-9800-0f337fd9743d" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/4618c2cc-0ac7-4339-9800-0f337fd9743d" },
     ],
     links: [
       {
