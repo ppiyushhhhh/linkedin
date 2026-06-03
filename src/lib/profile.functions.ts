@@ -73,6 +73,33 @@ export const getProfileByUsername = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     if (!profile) return null;
 
+    const callerId = await getOptionalCallerId();
+    const isOwner = callerId === profile.id;
+    if ((profile as any).profile_visibility === "private" && !isOwner) {
+      return {
+        profile: {
+          id: profile.id,
+          username: profile.username,
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          avatar_url: profile.avatar_url,
+          cover_url: null,
+          headline: "",
+          about: "",
+          location: "",
+          website: null,
+          github_url: null,
+          linkedin_url: null,
+          created_at: profile.created_at,
+          is_private: true,
+        },
+        experiences: [],
+        educations: [],
+        skills: [],
+        stats: { followers: 0, following: 0, connections: 0 },
+      };
+    }
+
     const [{ data: experiences }, { data: educations }, { data: skills }, { count: followers }, { count: following }, { count: connections }] = await Promise.all([
       supabaseAdmin.from("experiences").select("*").eq("profile_id", profile.id).order("start_date", { ascending: false }),
       supabaseAdmin.from("educations").select("*").eq("profile_id", profile.id).order("start_date", { ascending: false, nullsFirst: false }),
