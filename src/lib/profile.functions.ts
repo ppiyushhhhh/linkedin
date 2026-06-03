@@ -1,10 +1,24 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const PROFILE_COLS =
-  "id, username, first_name, last_name, headline, about, avatar_url, cover_url, location, website, github_url, linkedin_url, created_at";
+  "id, username, first_name, last_name, headline, about, avatar_url, cover_url, location, website, github_url, linkedin_url, created_at, profile_visibility";
+
+async function getOptionalCallerId(): Promise<string | null> {
+  try {
+    const req = getRequest();
+    const auth = req?.headers.get("authorization");
+    if (!auth?.startsWith("Bearer ")) return null;
+    const token = auth.slice(7);
+    const { data } = await supabaseAdmin.auth.getUser(token);
+    return data.user?.id ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export const getMyProfile = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
