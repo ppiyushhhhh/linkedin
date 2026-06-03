@@ -1,10 +1,24 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const PROFILE_COLS =
-  "id, username, first_name, last_name, headline, about, avatar_url, cover_url, location, website, github_url, linkedin_url, created_at";
+  "id, username, first_name, last_name, headline, about, avatar_url, cover_url, location, website, github_url, linkedin_url, created_at, profile_visibility";
+
+async function getOptionalCallerId(): Promise<string | null> {
+  try {
+    const req = getRequest();
+    const auth = req?.headers.get("authorization");
+    if (!auth?.startsWith("Bearer ")) return null;
+    const token = auth.slice(7);
+    const { data } = await supabaseAdmin.auth.getUser(token);
+    return data.user?.id ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export const getMyProfile = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -58,6 +72,33 @@ export const getProfileByUsername = createServerFn({ method: "GET" })
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!profile) return null;
+
+    const callerId = await getOptionalCallerId();
+    const isOwner = callerId === profile.id;
+    if ((profile as any).profile_visibility === "private" && !isOwner) {
+      return {
+        profile: {
+          id: profile.id,
+          username: profile.username,
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          avatar_url: profile.avatar_url,
+          cover_url: null,
+          headline: "",
+          about: "",
+          location: "",
+          website: null,
+          github_url: null,
+          linkedin_url: null,
+          created_at: profile.created_at,
+          is_private: true,
+        },
+        experiences: [],
+        educations: [],
+        skills: [],
+        stats: { followers: 0, following: 0, connections: 0 },
+      };
+    }
 
     const [{ data: experiences }, { data: educations }, { data: skills }, { count: followers }, { count: following }, { count: connections }] = await Promise.all([
       supabaseAdmin.from("experiences").select("*").eq("profile_id", profile.id).order("start_date", { ascending: false }),
