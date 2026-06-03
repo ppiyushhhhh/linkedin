@@ -1,0 +1,46 @@
+name: Deploy linkedin to Azure Ubuntu
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy on Azure VM using SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.AZURE_HOST }}
+          username: ${{ secrets.AZURE_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          script: |
+            set -e
+
+            cd ${{ secrets.APP_DIR }}
+
+            echo "Pulling latest code..."
+            git pull origin main
+
+            echo "Installing dependencies..."
+            npm install
+
+            echo "Building project..."
+            npm run build
+
+            echo "Restarting PM2 app..."
+            pm2 delete linkedin || true
+            pm2 start npm --name linkedin -- run preview -- --host 0.0.0.0 --port 3000
+            pm2 save
+
+            echo "Restarting Nginx..."
+            sudo nginx -t
+            sudo systemctl restart nginx
+
+            echo "Deployment completed successfully."
