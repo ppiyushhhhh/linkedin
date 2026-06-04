@@ -1,3 +1,21 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Build output
+dist
+dist-ssr
+.output
+
+# Dependencies
+node_modules
+
+# Reports and backups
+reports
+backups
+*.tar.gz
+
 # Logs
 logs
 *.log
@@ -5,28 +23,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-.output
-.vinxi
-.tanstack/**
-.nitro
-*.local
+# Docker / local files
+.docker
+docker-data
 
-# Wrangler / Cloudflare
-.wrangler/
-.dev.vars
-
-# Editor directories and files
+# OS / editor
+.DS_Store
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
 *.sw?

@@ -1,4 +1,4 @@
-name: Deploy linkedin to Azure Ubuntu
+name: Deploy LinkUp World to Azure VM
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Build and Deploy
+    name: Docker Deploy on Azure Ubuntu
     runs-on: ubuntu-latest
 
     steps:
@@ -15,32 +15,42 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy on Azure VM using SSH
-        uses: appleboy/ssh-action@v1.2.0
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.AZURE_HOST }}
-          username: ${{ secrets.AZURE_USER }}
-          key: ${{ secrets.AZURE_SSH_KEY }}
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: 22
           script: |
             set -e
 
-            cd ${{ secrets.APP_DIR }}
+            cd /home/azureuser/linkedin
 
             echo "Pulling latest code..."
             git pull origin main
 
-            echo "Installing dependencies..."
-            npm install
-
-            echo "Building project..."
-            npm run build
-
-            echo "Restarting PM2 app..."
+            echo "Stopping old PM2/Vite process if any..."
             pm2 delete linkedin || true
-            pm2 start npm --name linkedin -- run preview -- --host 0.0.0.0 --port 3000
-            pm2 save
+            pm2 save || true
+            sudo fuser -k 3000/tcp || true
 
-            echo "Restarting Nginx..."
+            echo "Rebuilding Docker container..."
+            sudo docker compose down --remove-orphans
+            sudo docker rm -f linkup-world-app || true
+            sudo docker compose up -d --build
+
+            echo "Testing Docker container..."
+            sudo docker ps
+            sudo docker logs linkup-world-app --tail 50
+
+            echo "Testing local app..."
+            curl -I http://localhost:3000/login
+
+            echo "Testing Nginx..."
             sudo nginx -t
             sudo systemctl restart nginx
+
+            echo "Testing public app..."
+            curl -I http://20.244.48.171/login
 
             echo "Deployment completed successfully."
