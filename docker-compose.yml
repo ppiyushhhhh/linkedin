@@ -1,0 +1,17 @@
+services:
+  linkup-world:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: linkup-world-app
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/login"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
