@@ -7,14 +7,14 @@ on:
 
 jobs:
   deploy:
-    name: Docker Deploy on Azure Ubuntu
+    name: Deploy Docker App on Azure Ubuntu
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy on Azure VM using SSH
+      - name: Deploy on Azure VM
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
@@ -24,33 +24,64 @@ jobs:
           script: |
             set -e
 
+            echo "========== START DEPLOYMENT =========="
+
             cd /home/azureuser/linkedin
 
-            echo "Pulling latest code..."
-            git pull origin main
+            echo "Current directory:"
+            pwd
 
-            echo "Stopping old PM2/Vite process if any..."
+            echo "Pulling latest code..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "Checking important files..."
+            ls -la
+            ls -la .env || echo ".env not visible or missing"
+            ls -la Dockerfile docker-compose.yml server-adapter.mjs
+
+            echo "Stopping old PM2/Vite process if running..."
             pm2 delete linkedin || true
             pm2 save || true
+
+            echo "Freeing port 3000..."
             sudo fuser -k 3000/tcp || true
 
-            echo "Rebuilding Docker container..."
-            sudo docker compose down --remove-orphans
-            sudo docker rm -f linkup-world-app || true
-            sudo docker compose up -d --build
+            echo "Docker version:"
+            sudo docker --version
+            sudo docker compose version
 
-            echo "Testing Docker container..."
-            sudo docker ps
-            sudo docker logs linkup-world-app --tail 50
+            echo "Stopping old Docker Compose stack..."
+            sudo docker compose down --remove-orphans || true
+
+            echo "Building Docker image..."
+            sudo docker compose build --no-cache
+
+            echo "Starting Docker container..."
+            sudo docker compose up -d
+
+            echo "Waiting for app to start..."
+            sleep 20
+
+            echo "Docker Compose status:"
+            sudo docker compose ps
+
+            echo "Docker container list:"
+            sudo docker ps -a
+
+            echo "Docker logs:"
+            sudo docker compose logs --tail=150
 
             echo "Testing local app..."
             curl -I http://localhost:3000/login
 
-            echo "Testing Nginx..."
+            echo "Testing Nginx config..."
             sudo nginx -t
+
+            echo "Restarting Nginx..."
             sudo systemctl restart nginx
 
             echo "Testing public app..."
             curl -I http://20.244.48.171/login
 
-            echo "Deployment completed successfully."
+            echo "========== DEPLOYMENT SUCCESSFUL =========="
