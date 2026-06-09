@@ -40,6 +40,7 @@ const filtersSchema = z.object({
 }).partial();
 
 export const listJobs = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data) => filtersSchema.parse(data ?? {}))
   .handler(async ({ data }) => {
     let q = supabaseAdmin
@@ -75,6 +76,7 @@ export const listJobs = createServerFn({ method: "POST" })
   });
 
 export const getJobById = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data }) => {
     const { data: job, error } = await supabaseAdmin
@@ -95,6 +97,7 @@ export const getJobById = createServerFn({ method: "POST" })
   });
 
 export const getSimilarJobs = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data }) => {
     const { data: base } = await supabaseAdmin
