@@ -40,6 +40,7 @@ const filtersSchema = z.object({
 }).partial();
 
 export const listJobs = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data) => filtersSchema.parse(data ?? {}))
   .handler(async ({ data }) => {
     let q = supabaseAdmin
