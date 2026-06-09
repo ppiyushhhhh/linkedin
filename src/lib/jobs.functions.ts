@@ -97,6 +97,7 @@ export const getJobById = createServerFn({ method: "POST" })
   });
 
 export const getSimilarJobs = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data }) => {
     const { data: base } = await supabaseAdmin
