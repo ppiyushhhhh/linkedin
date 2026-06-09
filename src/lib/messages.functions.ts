@@ -225,6 +225,15 @@ export const markConversationRead = createServerFn({ method: "POST" })
   .inputValidator((d) => z.object({ conversation_id: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => {
     const me = context.userId;
+    // Verify caller is a participant before any writes
+    const { data: part } = await supabaseAdmin
+      .from("conversation_participants")
+      .select("user_id")
+      .eq("conversation_id", data.conversation_id)
+      .eq("user_id", me)
+      .maybeSingle();
+    if (!part) throw new Error("Not a participant");
+
     await supabaseAdmin
       .from("conversation_participants")
       .update({ last_read_at: new Date().toISOString() })
